@@ -1,0 +1,22 @@
+at:
+  type: book
+  title: Algebraic Topology
+  author: Allen Hatcher
+  date: 2002-01-01
+  url: https://pi.math.cornell.edu/~hatcher/AT/AT.pdf
+
+ss:
+  type: chapter
+  title: Spectral Sequences
+  author: Allen Hatcher
+  url: https://pi.math.cornell.edu/~hatcher/AT/ATch5.pdf
+  parent:
+    title: Algebraic Topology
+
+cat:
+  type: misc
+  title: Higher Homotopy and Category Theory
+  author:
+    - Sven-Ole Behrend
+    - Timo Essig
+  date: 2025
