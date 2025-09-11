@@ -213,14 +213,15 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
   $
 ]
 
-/* AT Hatcher, Section 3.2, p. 212 */
-#definition(title: "(Graded Cohomology Ring)")[
-  For $[alpha],[beta] in H^n (X;R)$ we have $alpha,beta: C_n -> R$.
-  Define $[alpha] + [beta] := [alpha + beta] in H^n (X;R)$.
+#definition(title: [(Graded Cohomology Ring) @at[p. 212]])[
+  For $[a],[b] in H^n (X;R)$ we have $a,b: C_n -> R$.
+  Define $[a] + [b] := [a + b] in H^n (X;R)$.
   $
-    H^*(X;R) := plus.big_(k>=0) H^n (X;R)
+    H^*(X;R) := plus.big_(n>=0) H^n (X;R)
   $
-  defines a _graded ring_ with the above addition and the cup product $cup$ as multiplication.
+  defines a _graded ring_ with the above addition and
+  $(sum alpha_i) cup (sum beta_j) := sum_{i,j} alpha_i cup beta_j$
+  as multiplication.
 ]
 
 #definition(title: [(Relative Cross Product) @at[p.~215]])[
@@ -244,7 +245,7 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
 
 #theorem(title: [(Künneth formula) @at[Theorem 3.18]])[
   For CW pairs $(X,A)$ and $(Y,B)$ the relative cross product in @relative_cross_product is an isomorphism of rings
-  if for all $k$, $H^k(Y,B;R)$ is a finitely generated free $R$-module.
+  if for all $k$, $H^k (Y,B;R)$ is a finitely generated free $R$-module.
 ]
 
 #corollary(title: "(Suspension Isomorphism)")[
