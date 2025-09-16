@@ -34,12 +34,14 @@
 #let example    = plain_mathblock(blocktitle: "Example")
 #let corollary  = plain_mathblock(blocktitle: "Corollary")
 
-#let cup   = math.op("⌣")
-#let colim = math.op("colim")
-#let Ext   = math.op("Ext")
-#let Hom   = math.op("Hom")
-#let Sq    = math.op(math.italic("Sq"))
-#let Top   = $bold("Top"_*)$
+#let cup     = math.op("⌣")
+#let colim   = math.op("colim")
+#let Ext     = math.op("Ext")
+#let Hom     = math.op("Hom")
+#let Sq      = math.op(math.italic("Sq"))
+#let Top     = $bold("Top"_*)$
+#let LMod(r) = $#(r)bold("-Mod")$
+
 
 #align(center, context [
   #text(size: 20pt, smallcaps(document.title))
@@ -150,8 +152,9 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
 = Cohomology and the Ext Functor
 
 #definition(title: [(Cohomology Groups) @at[p. 191]])[
-  Let $C_n^* := Hom(C_n,G)$ denote the $n$-th _cochain group_.
-  For $partial: C_n -> C_(n+1)$, define the _coboundary map_ $delta(phi) := partial^*(phi) = phi compose partial$.
+  Let $C$ be a chain complex and denote the $n$-th _cochain group_ by $C_n^* := Hom_R (C_n,M)$.
+  For a boundary map $partial: C_n -> C_(n+1)$,
+  define the _coboundary map_ $delta(phi) := partial^*(phi) = phi compose partial$.
   $
     dots.c <-
     C_(n+1)^* xarrow(sym: <-, delta)
@@ -163,11 +166,23 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
 ]
 
 #definition(title: [($Ext$ functor) @at[p. 195]])[
-  For a free resolution
+  Choose a free resolution $F$ of $M$, an exact sequence
   $
-    dots.c -> F_2 xarrow(f_2) F_1 xarrow(f_1) F_0 xarrow(f_0) H -> 0,
+    dots.c -> F_2 xarrow(f_2) F_1 xarrow(f_1) F_0 xarrow(f_0) M -> 0,
   $
-  define $Ext(H,G) := H^1(F;G) = ker f_2^* slash im f_1^*$.
+  with each $F_i$ a free $R$-module.
+  Apply $Hom_R (-,N)$ and drop $Hom_R (M,N)$ to optain a chain complex
+  $
+    dots.c <-
+    Hom_R (F_2,N) xarrow(sym: <-, f_2^*)
+    Hom_R (F_1,N) xarrow(sym: <-, f_1^*)
+    Hom_R (F_0,N) <-
+    0.
+  $
+  The homology groups define $Ext_R^n (M,N)$.
+  By @at[Lemma 3.1. (b)] these do not depend on the choice of $F$.
+
+  Write $Ext_R (M,N) := Ext_R^1 (M,N)$.
 ]
 
 #theorem(title: [(Universal Coefficient Theorem) @at[Theorem 3.2]])[
@@ -328,6 +343,12 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
     &= sum_j (-1)^(a+j) binom((p-1)(b-j), a-p j) beta P^(a+b-j) P^j \
     &- sum_j (-1)^(a+j) binom((p-1)(b-j)-1, a-p j-1) P^(a+b-j) beta P^j,
     &&" if " a <= p b
+  $
+]
+
+#definition(title: [(Steenrod Algebra) @at[p. 496]])[
+  $
+    (ZZ_2 angle.l Sq^1, Sq^2, dots angle.r)/"(Adem relations)"
   $
 ]
 
