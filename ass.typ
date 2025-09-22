@@ -9,7 +9,7 @@
   title: "Cohomology, Steenrod Algebra, and the Adams Spectral Sequence",
   author: ("Alex Herbst", "Andy Sukowski-Bang", "Emma Howe"),
 )
-#set heading(numbering: (n1, ..x) => numbering("1.1", n1 - 1, ..x))
+#set heading(numbering: "1.1")
 #set page(
   numbering: "1 of 1",
   header: context {
@@ -42,6 +42,8 @@
 #let Top     = $bold("Top"_*)$
 #let LMod(r) = $#(r)bold("-Mod")$
 
+#let col(color, x) = text(fill: color)[$#x$]
+
 
 #align(center, context [
   #text(size: 20pt, smallcaps(document.title))
@@ -50,8 +52,7 @@
   #v(2em)
 ])
 
-
-= Suspension and Prespectra
+= Suspension and Smash Product
 
 #grid(
   columns: (auto,auto),
@@ -81,7 +82,7 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
   $
 ]
 
-#definition(title: "(Smash Product)")[
+#definition(title: [(Smash Product) @cat[Definition 1.28]])[
   Let $or$ denote the wedge sum.
   By slight abuse of notation
   $
@@ -94,60 +95,6 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
 #example[
   $X and S^k = Sigma^k X$.
 ] <smash_product_reduced_suspension>
-
-#definition(title: [(Prespectra) @cat[Definition 2.6]])[
-  A _prespectrum_ $E$ is a family ${E_n}_(n>=0)$ of based spaces,
-  together with _structure maps_
-  #grid(
-    columns: (auto,auto),
-    gutter: 1.5em,
-    [
-      $
-        sigma_n: Sigma E_n -> E_(n+1).
-      $
-      A map $f: E -> E'$ of prespectra is a family ${f_n}_(n>=0)$ satisfying the commutativity of the right diagram.
-      Prespectra form a category $cal(P)$.
-    ],
-    [
-      #v(-1.5em)
-      #diagram(
-        $
-          Sigma E_n & Sigma E'_n \
-          E_(n+1)   & E'_(n+1)
-        $,
-        edge((0,0), "r", "->", $Sigma f_n$, left),
-        edge((0,0), "d", "->", $sigma_n$),
-        edge((0,1), "r", "->", $f_(n+1)$),
-        edge((1,0), "d", "->", $sigma'_n$, left)
-      )
-    ]
-  )
-]
-
-#example(title: [(Suspension prepectrum functor) @cat[Definition 2.7]])[
-  Define $Sigma^oo: Top -> cal(P)$ via
-  $
-    (Sigma^oo X)_n := Sigma^n X
-    quad "and" quad
-    Sigma(Sigma^n X) xarrow(id) Sigma^(n+1) X.
-  $
-] <suspension_prespectrum_functor>
-
-#example(title: [(Sphere spectrum) @cat[Definition 2.8]])[
-  A special case of @suspension_prespectrum_functor is $SS := Sigma^oo S^0$.
-]
-
-#definition(title: [(Homotopy Groups of Prespectra) @cat[Definition 2.23]])[
-  For a prespectrum $E$ define the telescope
-  #v(-1em)
-  $
-    pi_(n+k)(E_k) xarrow(Sigma)
-    pi_(n+k+1)(Sigma E_k) xarrow((sigma_k)_*)
-    pi_(n+k+1)(E_(k+1)).
-  $
-  Now define $pi_n (E) := colim_k pi_(n+k)(E_k)$.
-]
-
 
 = Cohomology and the Ext Functor
 
@@ -210,11 +157,11 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
   Note that both $ZZ$ and $0$ are free.
   Thus by @uct and @ext_properties:
   $
-    H^m (S^n;G)
-    tilde.equiv Ext(H_m S^n,G) plus.circle Hom(H_m S^n,G)
+    H^n (S^m;G)
+    tilde.equiv Ext(H_(n-1)(S^m),G) plus.circle Hom(H_n (S^m),G)
     tilde.equiv 0 plus.circle
     cases(
-      G\, &" if" m in {0,n},
+      G\, &" if" n in {0,m},
       0\, &" otherwise"
     )
   $
@@ -272,7 +219,6 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
   $
 ] <suspension_isomorphism>
 
-
 = Steenrod Operations and the Steenrod Algebra
 
 #grid(
@@ -319,7 +265,7 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
 
   + $Sq^i$'s are stable.
     $Sq^i (sigma(alpha)) = sigma(Sq^i (alpha))$
-    where $sigma: H^n (X;Z_2) -> H^(n+1)(Sigma X;ZZ_2)$ is the suspension isomorphism from @suspension_isomorphism.
+    where $sigma: H^n (X;ZZ_2) -> H^(n+1)(Sigma X;ZZ_2)$ is the suspension isomorphism from @suspension_isomorphism.
 
   + Steenrod squares extend $alpha |-> alpha^2$.
     $Sq^i (alpha) = alpha^2$ if $i = |alpha|$,
@@ -348,24 +294,215 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
 
 #definition(title: [(Steenrod Algebra) @at[p. 496]])[
   $
+    cal(A)_2 :=
     (ZZ_2 angle.l Sq^1, Sq^2, dots angle.r)/"(Adem relations)"
+  $
+  For odd $p$ define
+  $
+    cal(A)_p :=
+    (ZZ_p angle.l beta, P^1, P^2, dots angle.r)/("(Adem relations and" beta^2 = 0 ")")
   $
 ]
 
-
 = The Adams Spectral Sequence and Low-Dimensional Computations
 
-/* AT Hatcher, Section 5.2, p. 580 */
+/* SS Hatcher, Section 5.2, p. 580 */
 $
   [Y,X] &-> Hom_cal(A)(H^*(X),H^*(Y))
 $
 where $H^*(X)$ is viewed as a graded left module over $cal(A)$.
+TODO: Does Hatcher mean
+$
+  [Y,X] &-> Hom_cal(A)_p (H^*(X;ZZ_p),H^*(Y;ZZ_p)) ?
+$
 
-/* AT Hatcher, Section 5.2, p. 581 */
-#definition[
+== Spectra
+
+TODO @ss[p. 588]:
+One way in which spectra are better than spaces is that $[X,Y]$ is always an abelian group.
+
+#definition(title: [(Prespectra) @cat[Definition 2.6]])[
+  A _prespectrum_ $E$ is a family ${E_n}_(n>=0)$ of based spaces,
+  together with _structure maps_
+  #grid(
+    columns: (auto,auto),
+    gutter: 1.5em,
+    [
+      $
+        sigma_n: Sigma E_n -> E_(n+1).
+      $
+      A map $f: E -> E'$ of prespectra is a family ${f_n}_(n>=0)$ satisfying the commutativity of the right diagram.
+      Prespectra form a category $cal(P)$.
+    ],
+    [
+      #v(-1.5em)
+      #diagram(
+        $
+          Sigma E_n & Sigma E'_n \
+          E_(n+1)   & E'_(n+1)
+        $,
+        edge((0,0), "r", "->", $Sigma f_n$, left),
+        edge((0,0), "d", "->", $sigma_n$),
+        edge((0,1), "r", "->", $f_(n+1)$),
+        edge((1,0), "d", "->", $sigma'_n$, left)
+      )
+    ]
+  )
+]
+
+#example(title: [(Suspension prepectrum functor) @cat[Definition 2.7]])[
+  Define $Sigma^oo: Top -> cal(P)$ via
   $
-    E_2^(s,t) = Ext_cal(A)^(s,t) (H^*(X),H^*(Y))
+    (Sigma^oo X)_n := Sigma^n X
+    quad "and" quad
+    Sigma(Sigma^n X) xarrow(id) Sigma^(n+1) X.
   $
+] <suspension_prespectrum_functor>
+
+#example(title: [(Sphere spectrum) @cat[Definition 2.8]])[
+  A special case of @suspension_prespectrum_functor is $SS := Sigma^oo S^0$.
+]
+
+#example(title: [(CW spectrum) @cat[Definition 2.27] @ss[p. 585]])[
+  Let $X_n$ be based CW complexes and $sigma_n$ cellular inclusions.
+]
+
+#example(title: [(Eilenberg-MacLane spectrum) @cat[Example 2.26] @ss[p. 585]])[
+  TODO
+]
+
+#definition(title: [(Homotopy Groups of Prespectra) @cat[Definition 2.23]])[
+  For a prespectrum $E$ define the telescope
+  #v(-1em)
+  $
+    pi_(n+k)(E_k) xarrow(Sigma)
+    pi_(n+k+1)(Sigma E_k) xarrow((sigma_k)_*)
+    pi_(n+k+1)(E_(k+1)).
+  $
+  Now define $pi_n (E) := colim_k pi_(n+k)(E_k)$.
+]
+
+#definition(title: [(Homology of CW spectrum) @ss[p. 586]])[
+  TODO
+]
+
+#definition(title: [(Mapping Cylinder of Cellular Map])[
+  Let $f: X -> Y$ be a cellular map of CW spectra.
+  Pass to a strict map (TODO).
+
+  #figure(
+    image("images/mapping_cylinder.svg", width: 20em),
+    caption: [Mapping cylinder $M_f := ((X times I) union.sq Y)/((x,1) ~ f(x))$.],
+  )
+]
+
+There is an analogous result of @cat[Theorem 3.6] @at[Theorem 4.57] for CW spectra:
+
+#pagebreak()
+#theorem(title: [(Representability of $H^m (-;G)$) @ss[Proposition 5.45]])[
+  There are natural isomorphisms
+  $H^m (X;G) tilde.equiv [X,K(G,m)]$
+  for all CW spectra $X$.
+] <cw_spectra_homology_representability>
+
+#theorem(title: [@ss[Proposition 5.46]])[
+  The natural map
+  $[X,or.big_i K(G,n_i)] -> product_i [X,K(G,n_i)]$
+  is an isomorphism if $X$ is a connective CW spectrum of finite type and $n_i->oo$ as $i->oo$.
+] <wedge_product_iso>
+
+== Constructing the Adams Spectral Sequence
+
+Let $X$ be a connective CW spectrum of finite type.
+We construct this diagram @ss[p. 594]:
+
+/* SS Hatcher, Section 5.2, p. 594 */
+#align(
+  center,
+  diagram(
+    spacing: (1.2em, 0.5em),
+    $
+      X edge(->)
+      &  K_0 edge("rr", ->) edge("dr", ->)
+      && K_1 edge("rr", ->) edge("dr", ->)
+      && K_2 edge("rr", ->) edge("dr", ->)
+      && dots.c \
+      && K_0 slash X   =: X_1 edge("ur", ->)
+      && K_1 slash X_1 =: X_2 edge("ur", ->)
+      && K_2 slash X_2 =: X_3 edge("ur", ->)
+    $
+  )
+)
+
+Choose generators $alpha_i$ for the $cal(A)$-module $H^*(X)$,
+with finitely many $alpha_i$'s in each $H^k (X)$.
+These determine a homotopy class $[X,K_0]$ for $K_0 := or.big_k K(G,k)$ by @cw_spectra_homology_representability and @wedge_product_iso:
+$
+  angle.l {alpha_i} angle.r =
+  H^*(X;G) =
+  product_k H^k (X;G) tilde.equiv
+  product_k [X,K(G,k)] tilde.equiv
+  [X, or.big_k K(G,k)]
+$
+By TODO, we can represent $[X,K_0]$ by an inclusion $X arrow.r.hook K_0$
+and form the quotient $X_1 := K_0 slash X$, which is again a connective spectrum of finite type.
+
+The associated diagram of cohomology @ss[p. 594]
+/* SS Hatcher, Section 5.2, p. 594 */
+#align(
+  center,
+  diagram(
+    spacing: (1.6em, 0.3em),
+    $
+      0 edge(<-)
+      &  H^*(X)   edge(<-)
+      &  H^*(K_0) edge("rr", <-) edge("dr", <-)
+      && H^*(K_1) edge("rr", <-) edge("dr", <-)
+      && dots.c \
+      &&& H^*(X_1) edge("ur", <-)
+      &&  H^*(X_2) edge("ur", <-) \
+      &&  0 edge("ur", <-)
+      &&  0 edge("ur", <-) edge("ul", ->)
+      &&  0                edge("ul", ->)
+    $
+  )
+)
+gives a resolution of $H^*(X)$ by free $cal(A)$-modules.
+
+#definition(title: [($E_1$ page of Adams Spectral Sequence) @ss[p. 595]])[
+  $
+    E_1^(col(#red,s),col(#blue,t))
+    = pi_col(#blue,t)^Y(K_col(#red,s))
+    = [Sigma^col(#blue,t) Y, K_col(#red,s)]
+    = Hom_cal(A)^0 (H^*(K_col(#red,s)),H^*(Sigma^col(#blue,t) Y))
+    = Hom_cal(A)^col(#blue,t) (H^*(K_col(#red,s)),H^*(Y))
+  $
+]
+
+In general, the differentials are maps $d_r: E_r^(s,t) -> E_r^(s-1,t+r)$ (TODO induced?).
+$d_1: pi_t^Y (K_2) -> pi_t^Y(K_(s+1))$ is induced by $K_s -> K_(s+1)$ in the resolution of $X$ (TODO link),
+so the $E_1$ page of the spectral sequence consists of complexes
+$
+  0 ->
+  Hom_cal(A)^col(#blue,t) (H^*(K_col(#red,0)),H^*(Y)) ->
+  Hom_cal(A)^col(#blue,t) (H^*(K_col(#red,1)),H^*(Y)) ->
+  dots.c
+$
+whose homology groups are by definition
+$
+  E_2^(col(#red,s),col(#blue,t))
+  = Ext_cal(A)^(col(#red,s),col(#blue,t)) (H^*(X),H^*(Y)).
+$
+
+#theorem(title: [(Convergence of Adams Spectral Sequence) @ss[Theorem 5.47]])[
+  For $X$ a connective CW spectrum of finite type,
+  the Adams spectral sequence converges to $pi_*^Y(X)$ modulo torsion of order prime to $p$:
+
+  #set enum(numbering: "(a)")
+  + For fixed $s,t$ the groups $E_r^(s,t)$ stabilize for large $r$.
+    TODO
+
+  + $inter.big_n F^(s+n,t+n)$ is the subgroup of $pi_(t-s)^Y (X)$ consisting of torsion elements of order prime to $p$.
 ]
 
 #bibliography("ass.yml", full: true)
