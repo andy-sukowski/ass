@@ -26,6 +26,7 @@
 
 #show heading: smallcaps
 #show heading: set text(weight: "regular")
+#show heading: set block(above: 1.4em, below: 1em)
 #show link: text.with(fill: blue)
 #show sym.colon: math.class("fence", sym.colon)
 
@@ -36,6 +37,7 @@
 
 #let cup     = math.op("⌣")
 #let colim   = math.op("colim")
+#let dirlim  = $limits(display(lim_(#pad(top: -0.9em, bottom: -0.3em, math.stretch(math.arrow, size: 1.1em)))))$
 #let Ext     = math.op("Ext")
 #let Hom     = math.op("Hom")
 #let Sq      = math.op(math.italic("Sq"))
@@ -383,10 +385,24 @@ One way in which spectra are better than spaces is that $[X,Y]$ is always an abe
 ]
 
 #definition(title: [(Homology of CW spectrum) @ss[p. 586]])[
-  TODO
+  For each $n$, consider the cellular chain complex $C_*(X_n;G)$ relative to the basepoint.
+  The inclusions $Sigma X_n arrow.r.hook X_(n+1)$ induce chain maps
+  $
+    C_* (X_n;G) tilde.equiv
+    C_(*+1)(Sigma X_n;G) arrow.r.hook
+    C_(*+1)(X_(n+1);G)
+  $
+  with a dimension shift due to suspension.
+  The union
+  $
+    C_*(X;G) := dirlim_n C_(*+n)(X_n;G)
+  $
+  is the _chain complex of the CW spectrum $X$_ with a $G$ summand for each cell of $X$.
+  Since homology commutes with direct limits,
+  $H_i(X;G) = dirlim_n H_(i+n)(X_n;G)$.
 ]
 
-#definition(title: [(Mapping Cylinder of Cellular Map])[
+#definition(title: [(Mapping Cylinder of Cellular Map)])[
   Let $f: X -> Y$ be a cellular map of CW spectra.
   Pass to a strict map (TODO).
 
@@ -398,7 +414,6 @@ One way in which spectra are better than spaces is that $[X,Y]$ is always an abe
 
 There is an analogous result of @cat[Theorem 3.6] @at[Theorem 4.57] for CW spectra:
 
-#pagebreak()
 #theorem(title: [(Representability of $H^m (-;G)$) @ss[Proposition 5.45]])[
   There are natural isomorphisms
   $H^m (X;G) tilde.equiv [X,K(G,m)]$
@@ -414,25 +429,25 @@ There is an analogous result of @cat[Theorem 3.6] @at[Theorem 4.57] for CW spect
 == Constructing the Adams Spectral Sequence
 
 Let $X$ be a connective CW spectrum of finite type.
-We construct this diagram @ss[p. 594]:
+We construct this diagram:
 
 /* SS Hatcher, Section 5.2, p. 594 */
-#align(
-  center,
+#figure(
   diagram(
     spacing: (1.2em, 0.5em),
     $
-      X edge(->)
-      &  K_0 edge("rr", ->) edge("dr", ->)
-      && K_1 edge("rr", ->) edge("dr", ->)
-      && K_2 edge("rr", ->) edge("dr", ->)
+      X edge(arrow.r.hook)
+      &  K_0 edge("rr", ->) edge("dr", ->>)
+      && K_1 edge("rr", ->) edge("dr", ->>)
+      && K_2 edge("rr", ->) edge("dr", ->>)
       && dots.c \
-      && K_0 slash X   =: X_1 edge("ur", ->)
-      && K_1 slash X_1 =: X_2 edge("ur", ->)
-      && K_2 slash X_2 =: X_3 edge("ur", ->)
+      && K_0 slash X   =: X_1 edge("ur", arrow.r.hook)
+      && K_1 slash X_1 =: X_2 edge("ur", arrow.r.hook)
+      && K_2 slash X_2 =: X_3 edge("ur", arrow.r.hook)
     $
-  )
-)
+  ),
+  caption: [Resolution of $X$. @ss[p. 594]],
+) <resolution_X>
 
 Choose generators $alpha_i$ for the $cal(A)$-module $H^*(X)$,
 with finitely many $alpha_i$'s in each $H^k (X)$.
@@ -444,59 +459,84 @@ $
   product_k [X,K(G,k)] tilde.equiv
   [X, or.big_k K(G,k)]
 $
-By TODO, we can represent $[X,K_0]$ by an inclusion $X arrow.r.hook K_0$
+We can represent $[X,K_0]$ by an inclusion $X arrow.r.hook K_0$ via a mapping cylinder (TODO)
 and form the quotient $X_1 := K_0 slash X$, which is again a connective spectrum of finite type.
 
 The associated diagram of cohomology @ss[p. 594]
-/* SS Hatcher, Section 5.2, p. 594 */
-#align(
-  center,
+#figure(
   diagram(
     spacing: (1.6em, 0.3em),
     $
       0 edge(<-)
-      &  H^*(X)   edge(<-)
-      &  H^*(K_0) edge("rr", <-) edge("dr", <-)
-      && H^*(K_1) edge("rr", <-) edge("dr", <-)
+      &  H^*(X)   edge(<<-)
+      &  H^*(K_0) edge("rr", <-) edge("dr", arrow.l.hook)
+      && H^*(K_1) edge("rr", <-) edge("dr", arrow.l.hook)
       && dots.c \
-      &&& H^*(X_1) edge("ur", <-)
-      &&  H^*(X_2) edge("ur", <-) \
+      &&& H^*(X_1) edge("ur", <<-)
+      &&  H^*(X_2) edge("ur", <<-) \
       &&  0 edge("ur", <-)
       &&  0 edge("ur", <-) edge("ul", ->)
       &&  0                edge("ul", ->)
     $
-  )
+  ),
+  caption: [Free resolution of $H^*(X)$. @ss[p. 594]],
 )
-gives a resolution of $H^*(X)$ by free $cal(A)$-modules.
+gives a resolution of $H^*(X)$ by free $cal(A)$-modules (TODO).
+
+Fix a finite spectrum $Y$ and consider the functors $pi_t^Y (Z) := [Sigma^t Y,Z]$.
+Applied to the cofibrations $X_s -> K_s -> X_(s+1)$, these give long exact sequences forming a staircase diagram:
+#figure(
+  diagram(
+    spacing: (1.6em, 1em),
+    $
+      pi_t^Y X_s         & pi_t^Y K_s         & pi_t^Y X_(s+1) \
+      pi_(t-1)^Y X_(s-1) & pi_(t-1)^Y K_(s-1) & pi_(t-1)^Y X_s
+    $,
+    edge((-1,0), "r", "->"),
+    edge((-1,1), "r", "->"),
+    edge((0,0),  "r", "->"),
+    edge((0,1),  "r", "->"),
+    edge((1,0),  "r", "->"),
+    edge((1,1),  "r", "->"),
+    edge((2,0),  "r", "->"),
+    edge((2,1),  "r", "->"),
+    edge((0,-1), "d", "->"),
+    edge((0,0),  "d", "->"),
+    edge((0,1),  "d", "->"),
+    edge((2,-1), "d", "->"),
+    edge((2,0),  "d", "->"),
+    edge((2,1),  "d", "->"),
+  ),
+)
 
 #definition(title: [($E_1$ page of Adams Spectral Sequence) @ss[p. 595]])[
   $
-    E_1^(col(#red,s),col(#blue,t))
-    = pi_col(#blue,t)^Y(K_col(#red,s))
-    = [Sigma^col(#blue,t) Y, K_col(#red,s)]
-    = Hom_cal(A)^0 (H^*(K_col(#red,s)),H^*(Sigma^col(#blue,t) Y))
-    = Hom_cal(A)^col(#blue,t) (H^*(K_col(#red,s)),H^*(Y))
+    E_1^(s,t)
+    = pi_t^Y (K_s)
+    = [Sigma^t Y, K_s]
+    = Hom_cal(A)^0 (H^*(K_s),H^*(Sigma^t Y))
+    = Hom_cal(A)^t (H^*(K_s),H^*(Y))
   $
 ]
 
 In general, the differentials are maps $d_r: E_r^(s,t) -> E_r^(s-1,t+r)$ (TODO induced?).
-$d_1: pi_t^Y (K_2) -> pi_t^Y(K_(s+1))$ is induced by $K_s -> K_(s+1)$ in the resolution of $X$ (TODO link),
+$d_1: pi_t^Y (K_2) -> pi_t^Y (K_(s+1))$ is induced by $K_s -> K_(s+1)$ in the resolution of $X$ (@resolution_X),
 so the $E_1$ page of the spectral sequence consists of complexes
 $
   0 ->
-  Hom_cal(A)^col(#blue,t) (H^*(K_col(#red,0)),H^*(Y)) ->
-  Hom_cal(A)^col(#blue,t) (H^*(K_col(#red,1)),H^*(Y)) ->
+  Hom_cal(A)^t (H^*(K_0),H^*(Y)) ->
+  Hom_cal(A)^t (H^*(K_1),H^*(Y)) ->
   dots.c
 $
 whose homology groups are by definition
 $
-  E_2^(col(#red,s),col(#blue,t))
-  = Ext_cal(A)^(col(#red,s),col(#blue,t)) (H^*(X),H^*(Y)).
+  E_2^(s,t)
+  = Ext_cal(A)^(s,t) (H^*(X),H^*(Y)).
 $
 
 #theorem(title: [(Convergence of Adams Spectral Sequence) @ss[Theorem 5.47]])[
   For $X$ a connective CW spectrum of finite type,
-  the Adams spectral sequence converges to $pi_*^Y(X)$ modulo torsion of order prime to $p$:
+  the Adams spectral sequence converges to $pi_*^Y (X)$ modulo torsion of order prime to $p$:
 
   #set enum(numbering: "(a)")
   + For fixed $s,t$ the groups $E_r^(s,t)$ stabilize for large $r$.
@@ -504,5 +544,7 @@ $
 
   + $inter.big_n F^(s+n,t+n)$ is the subgroup of $pi_(t-s)^Y (X)$ consisting of torsion elements of order prime to $p$.
 ]
+
+== Computing a Few Stable Homotopy Groups of Spheres
 
 #bibliography("ass.yml", full: true)
