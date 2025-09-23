@@ -31,13 +31,13 @@
 #show link: text.with(fill: blue)
 #show sym.colon: math.class("fence", sym.colon)
 
-#let theorem    = fancy_mathblock(blocktitle: "Theorem")
-#let definition = fancy_mathblock(blocktitle: "Definition")
-#let example    = plain_mathblock(blocktitle: "Example")
-#let lemma  = fancy_mathblock(blocktitle: "Lemma")
-#let proposition  = plain_mathblock(blocktitle: "Proposition")
-#let corollary  = plain_mathblock(blocktitle: "Corollary")
-#let proof      = proofblock()
+#let definition  = fancy_mathblock(blocktitle: "Definition")
+#let theorem     = fancy_mathblock(blocktitle: "Theorem")
+#let lemma       = fancy_mathblock(blocktitle: "Lemma")
+#let proposition = fancy_mathblock(blocktitle: "Proposition")
+#let corollary   = fancy_mathblock(blocktitle: "Corollary")
+#let example     = plain_mathblock(blocktitle: "Example")
+#let proof       = proofblock()
 
 #let cup     = math.op("⌣")
 #let colim   = math.op("colim")
@@ -207,13 +207,11 @@ $
   C: dots.c -> C_(n+1) (X) xarrow(diff_(n+1)) C_n (X) xarrow(diff_n) C_(n-1) (X) -> dots.c
 $
 is a chain complex where $C_n (X)$ denotes the singular chain group and $diff_n$ boundary maps.
-
 We can apply $Hom (-,G)$ for $G in Ab$ and get a cochain complex
 $
   C^*: dots.c -> C^(n-1) (X;G) xarrow(delta_n) C^n (X;G) xarrow(delta_(n+1)) C^(n+1) (X;G) -> dots.c
 $
 where $C^n (X;G):=Hom (C_n (X),G)$ are the singular cochain groups and $delta_n:= diff_n ^*$ are the coboundary maps defined by $delta(alpha)= diff^*(alpha)= alpha compose diff$ for some map $alpha$.
-
 This is in fact a cochain complex since
 $
   delta_n delta_(n-1) (alpha)=diff_n ^* diff_(n-1) ^* (alpha)=diff_n ^* (alpha compose diff_(n-1))=alpha compose diff_(n-1) compose diff_n = alpha compose 0 = 0.
@@ -228,7 +226,6 @@ follows from the fact that $C$ is a chain complex.
 ]
 
 We will sometimes also write $H^n (C;G)$ for some chain complex $C$ and mean $H^n (Hom (C,G))$ by that.
-
 For a pair $(X,A)$ of spaces we have
 $
   0-> C_n (A) xarrow(i) C_n (X) xarrow(j) C_n (X,A) -> 0
@@ -238,7 +235,6 @@ $
   0-> C^n (X,A;G) xarrow(j^*) C^n (X;G) xarrow(i^*) C^n (A;G) -> 0
 $
 where $C^n (X,A;G):=Hom (C_n (X,A), G)$ by showing that $im j^* = ker i^*$ and $im i^*=C^n (A;G)$.
-
 One gets relative cochain maps $delta_n ^A:C^n (X,A;G)-> C^(n+1) (X,A;G)$ by restricting the absolute cochain maps $delta_n: C^n (X;G)-> C^(n+1) (X;G)$ to 
 $
   ker i^*:= {psi: C_n (X) -> G | psi(sigma)=0 "for all" sigma in C_n (A)}
