@@ -311,15 +311,10 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
 
 = The Adams Spectral Sequence and Low-Dimensional Computations
 
-/* SS Hatcher, Section 5.2, p. 580 */
-$
-  [Y,X] &-> Hom_cal(A)(H^*(X),H^*(Y))
-$
-where $H^*(X)$ is viewed as a graded left module over $cal(A)$.
-TODO: Does Hatcher mean
-$
-  [Y,X] &-> Hom_cal(A)_p (H^*(X;ZZ_p),H^*(Y;ZZ_p)) ?
-$
+#figure(
+  image("images/spectral_sequence_pages.svg", width: 100%),
+  caption: [Pages of a spectral sequence and their differentials. @ss[p. 520]],
+)
 
 == Exact Couples
 
