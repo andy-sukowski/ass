@@ -21,12 +21,13 @@
     ]
   },
 )
-#set par(justify: true)
 #set text(font: "New Computer Modern")
+#set par(justify: true)
 
 #show heading: smallcaps
 #show heading: set text(weight: "regular")
-#show heading: set block(above: 1.4em, below: 1em)
+#show heading: set par(justify: false)
+#show heading: set block(above: 2em, below: 1em)
 #show link: text.with(fill: blue)
 #show sym.colon: math.class("fence", sym.colon)
 
@@ -46,8 +47,8 @@
 
 #let col(color, x) = text(fill: color)[$#x$]
 
-
 #align(center, context [
+  #set par(justify: false)
   #text(size: 20pt, smallcaps(document.title))
 
   #document.author.join(h(3em))
@@ -318,41 +319,118 @@ $
   [Y,X] &-> Hom_cal(A)_p (H^*(X;ZZ_p),H^*(Y;ZZ_p)) ?
 $
 
+== Exact Couples
+
+#definition(title: [(Filtration) @ss[p. 522]])[
+  A sequence of subspaces
+  $dots.c subset.eq X_p subset.eq X_(p+1) subset.eq dots.c$
+  is a _filtration_ of $X := product.co X_p$.
+]
+
+By @at[Theorem 2.16] each pair $(X_p,X_(p-1))$ yields a _long exact sequence of homology_ with connecting homomorphisms $k$.
+#math.equation(block: true, numbering: "(1)",
+  $dots.c xarrow(k) H_n (X_(p-1)) xarrow(i) H_n (X_p) xarrow(j) H_n (X_p, X_(p-1)) xarrow(k) H_(n-1) (X_(p-1)) xarrow(i) dots.c$
+) <long_exact_homology>
+Considering all pairs $(X_p,X_(p-1))$ at once, we can interlock these long exact sequences in a _staircase diagram_:
+#figure(
+  diagram(
+    spacing: (0.8em, 1em),
+    $
+      col(#red,H_(n+1)(X_p)) & col(#red,H_(n+1)(X_p,X_(p-1))) & col(#red,H_n (X_(p-1))) & H_n (X_(p-1),X_(p-2))       & H_(n-1)(X_(p-2)) \
+      H_(n+1)(X_(p+1))       & H_(n+1)(X_(p+1),X_p))          & col(#red,H_n (X_p))     & col(#red,H_n (X_p,X_(p-1))) & col(#red,H_(n-1)(X_(p-1))) \
+      H_(n+1)(X_(p+2))       & H_(n+1)(X_(p+2),X_(p+1))       & H_n (X_(p+1))           & H_n (X_(p+1),X_p)           & col(#red,H_(n-1)(X_p))
+    $,
+    edge((-1,0), "r", "->"),
+    edge((-1,1), "r", "->"),
+    edge((-1,2), "r", "->"),
+    edge((0,0),  "r", "->", stroke: red),
+    edge((0,1),  "r", "->"),
+    edge((0,2),  "r", "->"),
+    edge((1,0),  "r", "->", stroke: red),
+    edge((1,1),  "r", "->"),
+    edge((1,2),  "r", "->"),
+    edge((2,0),  "r", "->"),
+    edge((2,1),  "r", "->", stroke: red),
+    edge((2,2),  "r", "->"),
+    edge((3,0),  "r", "->"),
+    edge((3,1),  "r", "->", stroke: red),
+    edge((3,2),  "r", "->"),
+    edge((4,0),  "r", "->"),
+    edge((4,1),  "r", "->"),
+    edge((4,2),  "r", "->", stroke: red),
+    edge((0,-1), "d", "->", stroke: red),
+    edge((0,0),  "d", "->"),
+    edge((0,1),  "d", "->"),
+    edge((0,2),  "d", "->"),
+    edge((2,-1), "d", "->"),
+    edge((2,0),  "d", "->", stroke: red),
+    edge((2,1),  "d", "->"),
+    edge((2,2),  "d", "->"),
+    edge((4,-1), "d", "->"),
+    edge((4,0),  "d", "->"),
+    edge((4,1),  "d", "->", stroke: red),
+    edge((4,2),  "d", "->"),
+  ),
+  caption: [Staircase Diagram. @ss[p. 522]],
+) <staircase>
+
+#grid(
+  columns: (auto,auto),
+  gutter: 1em,
+  align: horizon,
+  definition(title: [(Exact Couple) @ss[p. 522]])[
+    Write the preceding staircase diagram (@staircase) concisely as the right triangle, an _exact couple_, where
+    $A := plus.big_(n,p) H_n (X_p)$
+    and
+    $E := plus.big_(n,p) H_n (X_p,X_(p-1))$
+    and $i$, $j$ and $k$ form the long exact sequences (@long_exact_homology).
+    Define a _differential_ $d: E -> E$ as $d := j k$.
+  ],
+  diagram(
+    spacing: (1em, 2em),
+    $
+      A &   & A \
+        & E &
+    $,
+    edge((0,0), "rr", "->", $i$),
+    edge((2,0), "dl", "->", $j$, left),
+    edge((1,1), "ul", "->", $k$, left),
+  ),
+)
+
+Note that all corners of the triangle are exact and $d^2 = j k j k = 0$, since $k j = 0$.
+Thus we can take homology $ker d slash im d$:
+
+#definition(title: [(Derived Couple) @ss[p. 522]])[
+  #grid(
+    columns: (40%,auto),
+    gutter: 1em,
+    [
+      - $E' := ker d slash im d$,
+      - $A' := i(A) subset.eq A$,
+    ],
+    [
+      - $i' := i|_A'$,
+      - $j'(i a) := [j a] in E'$ (why well-defined?),
+      - $k'[e] := k e in A'$ (why well-defined?).
+    ],
+  )
+]
+
+Iterating the process of deriving couples leads to the sequence
+$E,E',...$ with differentials $d,d',...$ called a _spectral sequence_.
+
 == Spectra
 
 TODO @ss[p. 588]:
 One way in which spectra are better than spaces is that $[X,Y]$ is always an abelian group.
 
-#definition(title: [(Prespectra) @cat[Definition 2.6]])[
-  A _prespectrum_ $E$ is a family ${E_n}_(n>=0)$ of based spaces,
-  together with _structure maps_
-  #grid(
-    columns: (auto,auto),
-    gutter: 1.5em,
-    [
-      $
-        sigma_n: Sigma E_n -> E_(n+1).
-      $
-      A map $f: E -> E'$ of prespectra is a family ${f_n}_(n>=0)$ satisfying the commutativity of the right diagram.
-      Prespectra form a category $cal(P)$.
-    ],
-    [
-      #v(-1.5em)
-      #diagram(
-        $
-          Sigma E_n & Sigma E'_n \
-          E_(n+1)   & E'_(n+1)
-        $,
-        edge((0,0), "r", "->", $Sigma f_n$, left),
-        edge((0,0), "d", "->", $sigma_n$),
-        edge((0,1), "r", "->", $f_(n+1)$),
-        edge((1,0), "d", "->", $sigma'_n$, left)
-      )
-    ]
-  )
+#definition(title: [(Spectrum) @ss[p. 584] @cat[Definition 2.6]])[
+  A _spectrum_ $X$ is a family ${X_n}_(n>=0)$ of based spaces,
+  together with _structure maps_ $sigma_n: Sigma X_n -> X_(n+1)$.
 ]
 
-#example(title: [(Suspension prepectrum functor) @cat[Definition 2.7]])[
+#example(title: [(Suspension spectrum functor) @cat[Definition 2.7]])[
   Define $Sigma^oo: Top -> cal(P)$ via
   $
     (Sigma^oo X)_n := Sigma^n X
@@ -365,23 +443,19 @@ One way in which spectra are better than spaces is that $[X,Y]$ is always an abe
   A special case of @suspension_prespectrum_functor is $SS := Sigma^oo S^0$.
 ]
 
+#example(title: [(Eilenberg-MacLane spectrum) @cat[Example 2.26] @ss[p. 585]])[
+  Let $G$ be abelian.
+  Define $X_n := K(G,n)$ and let
+  $
+    sigma_n: Sigma K(G,n) -> K(G,n+1)
+  $
+  be the adjoint of a CW approximation $K(G,n) -> Omega K(G,n+1)$, see @cat[Proposition 1.32].
+]
+
+TODO: Are CW approximations weak equivalences? Is it an $Omega$-spectrum?
+
 #example(title: [(CW spectrum) @cat[Definition 2.27] @ss[p. 585]])[
   Let $X_n$ be based CW complexes and $sigma_n$ cellular inclusions.
-]
-
-#example(title: [(Eilenberg-MacLane spectrum) @cat[Example 2.26] @ss[p. 585]])[
-  TODO
-]
-
-#definition(title: [(Homotopy Groups of Prespectra) @cat[Definition 2.23]])[
-  For a prespectrum $E$ define the telescope
-  #v(-1em)
-  $
-    pi_(n+k)(E_k) xarrow(Sigma)
-    pi_(n+k+1)(Sigma E_k) xarrow((sigma_k)_*)
-    pi_(n+k+1)(E_(k+1)).
-  $
-  Now define $pi_n (E) := colim_k pi_(n+k)(E_k)$.
 ]
 
 #definition(title: [(Homology of CW spectrum) @ss[p. 586]])[
@@ -399,7 +473,7 @@ One way in which spectra are better than spaces is that $[X,Y]$ is always an abe
   $
   is the _chain complex of the CW spectrum $X$_ with a $G$ summand for each cell of $X$.
   Since homology commutes with direct limits,
-  $H_i(X;G) = dirlim_n H_(i+n)(X_n;G)$.
+  $H_i (X;G) = dirlim_n H_(i+n)(X_n;G)$.
 ]
 
 #definition(title: [(Mapping Cylinder of Cellular Map)])[
@@ -411,6 +485,16 @@ One way in which spectra are better than spaces is that $[X,Y]$ is always an abe
     caption: [Mapping cylinder $M_f := ((X times I) union.sq Y)/((x,1) ~ f(x))$.],
   )
 ]
+
+Very similar to @cat[Proposition 2.41]:
+
+#theorem(title: [(Long exact sequence) @ss[p. 591]])[
+  For a pair $(X,A)$ of CW spectra and any $Y$, there is an exact sequence
+  $
+    [Y,A] -> [Y,X] -> [Y,X slash A] ->
+    [Y,Sigma A] -> [Y,Sigma X] -> dots.c
+  $
+] <long_exact>
 
 There is an analogous result of @cat[Theorem 3.6] @at[Theorem 4.57] for CW spectra:
 
@@ -484,28 +568,28 @@ The associated diagram of cohomology @ss[p. 594]
 gives a resolution of $H^*(X)$ by free $cal(A)$-modules (TODO).
 
 Fix a finite spectrum $Y$ and consider the functors $pi_t^Y (Z) := [Sigma^t Y,Z]$.
-Applied to the cofibrations $X_s -> K_s -> X_(s+1)$, these give long exact sequences forming a staircase diagram:
+Applied to the cofibrations $X_s -> K_s -> X_(s+1)$, these give long exact sequences by @long_exact, forming a staircase diagram like in @staircase.
 #figure(
   diagram(
     spacing: (1.6em, 1em),
     $
-      pi_t^Y X_s         & pi_t^Y K_s         & pi_t^Y X_(s+1) \
-      pi_(t-1)^Y X_(s-1) & pi_(t-1)^Y K_(s-1) & pi_(t-1)^Y X_s
+      col(#red,pi_t^Y X_s) & col(#red,pi_t^Y K_s) & col(#red,pi_t^Y X_(s+1)) \
+      pi_(t-1)^Y X_(s-1)   & pi_(t-1)^Y K_(s-1)   & col(#red,pi_(t-1)^Y X_s)
     $,
     edge((-1,0), "r", "->"),
     edge((-1,1), "r", "->"),
-    edge((0,0),  "r", "->"),
+    edge((0,0),  "r", "->", stroke: red),
     edge((0,1),  "r", "->"),
-    edge((1,0),  "r", "->"),
+    edge((1,0),  "r", "->", stroke: red),
     edge((1,1),  "r", "->"),
     edge((2,0),  "r", "->"),
     edge((2,1),  "r", "->"),
-    edge((0,-1), "d", "->"),
+    edge((0,-1), "d", "->", stroke: red),
     edge((0,0),  "d", "->"),
     edge((0,1),  "d", "->"),
     edge((2,-1), "d", "->"),
-    edge((2,0),  "d", "->"),
-    edge((2,1),  "d", "->"),
+    edge((2,0),  "d", "->", stroke: red),
+    edge((2,1),  "d", "->", stroke: red),
   ),
 )
 
@@ -540,11 +624,16 @@ $
 
   #set enum(numbering: "(a)")
   + For fixed $s,t$ the groups $E_r^(s,t)$ stabilize for large $r$.
-    TODO
+    For the filtration of $pi_(t-s)^Y (X)$ by images $F^(s,t)$ of the maps $pi_t^Y (X_s) -> pi_(t-s)^Y (X)$, we have
+    $
+      E_oo^(s,t) tilde.equiv F^(s,t) slash F^(s+1,t+1).
+    $
 
   + $inter.big_n F^(s+n,t+n)$ is the subgroup of $pi_(t-s)^Y (X)$ consisting of torsion elements of order prime to $p$.
 ]
 
 == Computing a Few Stable Homotopy Groups of Spheres
+
+TODO
 
 #bibliography("ass.yml", full: true)
