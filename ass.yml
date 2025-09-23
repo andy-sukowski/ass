@@ -20,3 +20,11 @@ cat:
     - Sven-Ole Behrend
     - Timo Essig
   date: 2025
+
+homalg:
+  type: book
+  title: A Course in Homological Algebra
+  author:
+    - Peter John Hilton
+    - Urs Stammbach
+  date: 1997

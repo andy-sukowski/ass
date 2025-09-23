@@ -34,7 +34,10 @@
 #let theorem    = fancy_mathblock(blocktitle: "Theorem")
 #let definition = fancy_mathblock(blocktitle: "Definition")
 #let example    = plain_mathblock(blocktitle: "Example")
+#let lemma  = fancy_mathblock(blocktitle: "Lemma")
+#let proposition  = plain_mathblock(blocktitle: "Proposition")
 #let corollary  = plain_mathblock(blocktitle: "Corollary")
+#let proof      = proofblock()
 
 #let cup     = math.op("⌣")
 #let colim   = math.op("colim")
@@ -44,6 +47,7 @@
 #let Sq      = math.op(math.italic("Sq"))
 #let Top     = $bold("Top"_*)$
 #let LMod(r) = $#(r)bold("-Mod")$
+#let Ab      = $bold("Ab")$
 
 #let col(color, x) = text(fill: color)[$#x$]
 
@@ -57,7 +61,270 @@
 
 #outline()
 
-= Suspension and Smash Product
+= Cohomology and the Ext-Functor
+
+== $Ext_R (A,B)$ and projective resolutions
+
+Let $R$ be a ring and denote by $LMod(R)$ the category of left R-modules.
+
+#definition(title: [(Cochain Complex and Cohomology Module) @homalg[p. 118]])[
+  A cochain complex is a family ${C_n}_(n in ZZ), C_n in LMod(R)$ and ${delta_n}_(n in ZZ), delta_n in Hom_R (C_(n-1),C_n)$ such that $delta_n delta_(n-1)=0$. We call $H(C):={H^n (C)}_(n in ZZ)$ the cohomology module where 
+  $
+    H^n (C):= (ker delta_n) / (im delta_(n-1))
+  $
+  is the n-th cohomology module.
+]
+
+In order to define right derived functors we need projective resolutions.
+
+#definition(title: [(Projective Resolution)])[
+  A projective resolution $P$ of $M in LMod(R)$ is an exact sequence 
+  $
+    P: dots.c ->
+    P_n ->
+    P_(n-1) ->
+    dots.c ->
+    P_0 ->
+    M ->
+    0
+  $
+  where all $P_i$ are projective, that is for all $epsilon: B ->> C, gamma: P_i ->C$ exists $beta: P_i -> B$ such that $epsilon beta = gamma$.
+]
+
+Free resolutions are also projective resolutions since free modules are also projective by the universal properties. 
+
+#lemma(title: [@homalg[Chapter IV. Lemma 4.2]])[
+  To every $A in LMod(R)$ there exists a projective resolution.
+]
+
+The preceding result gives rise to the latter definition of right derived functors. First we have a few results that will be of use later.
+
+#theorem(title: [@homalg[Chapter IV. Theorem 4.1]])[
+  Let $C,D$ be projective resolutions of $A,B in LMod(R)$ and $phi: A -> B in Hom_R (A,B)$. Then a chain map $tilde(phi): C ->D$ exists that induces $phi$. Each two of such chain maps are homotopic.
+]<thm4.1>
+
+#proposition(title: [@homalg[Chapter IV. Corollary 3.5]])[
+  For chain maps $phi tilde.eq psi: C-> D$ and an additive functor $F$ we have
+  $
+    H(F phi)=H(F psi): H(C)-> H(D).
+  $
+]<corollary3.5>
+
+We are now ready to define the right drived functors and show that they are in fact functors.
+
+#definition(title: [(Right Derived Functor) @homalg[p. 134]])[
+  Let $S: LMod(R)-> Ab$ be an additive contravariant functor. We define the right derived functor $R^n S: LMod(R)-> Ab$ of $S$ on objects as
+  $
+    R^n S(A):= H^n (S P) 
+  $
+  where  
+  $
+    S P: dots.c -> S P_n -> S P_(n-1) -> dots.c -> S P_0 -> 0
+  $
+
+  for a projective resolution $P "of" A$. For $alpha in Hom_R (A,A'), A,A' in LMod(R)$ and $P,P'$ projective resolutions of $A,A'$ there exists a chain map $tilde(alpha): P-> P'$ by @thm4.1 that induces $alpha$. Applying $R^n S$ yields a map $R^n S(alpha): R^n S(A)-> R^n S(A')$ independent of $tilde(alpha)$ by @corollary3.5.
+]<rdevfunc>
+
+#corollary(title: [@homalg[p.131 (adapted)]])[
+  $R^n S$ as in @rdevfunc is a functor.
+] 
+
+#proof()[
+  Let $alpha in Hom_R (A,A'), alpha' in Hom_R (A',A'')$ and $P,P',P''$ be projective resolutions of $A,A',A''$. Then both $tilde(alpha)compose tilde(alpha')$ as well as $tilde(alpha compose alpha')$ are chain maps that induce $alpha compose alpha'$ and therefore homotopic by @thm4.1. @corollary3.5 yields that $R^n S(alpha compose alpha')=R^n S(alpha) compose R^n S(alpha')$. We also have that $R^n S(id_A)=id_(R^n S(A))$. This concludes the proof.
+]
+
+The reader might be inclined to think that one should write $R_P ^n S(A)$ instead of $R^n S(A)$ since the definition depends on the projective resolution $P$ of $A$. The following theorem shows the independence of the choice of projective resolution.
+
+#proposition(title: [@homalg[Chapter IV. Proposition 5.1(adapted)]])[
+  Let $P,Q$ be two projective resolutions of $A in LMod(R)$, then 
+  $
+  R_P ^n S(A) tilde.equiv R_Q ^n S(A).
+  $
+]
+
+Since $Hom_R (-,B)$ is additive we are now ready to define $Ext_R ^n$ as the right derived functor of the Hom-functor.
+
+#definition(title: [($Ext$-functor) @homalg[p. 139]])[
+  For a ring $S$ and $B in LMod(S)$ we define 
+  $
+  Ext_S ^n (-,B):= R^n Hom_S (-,B).
+  $
+]
+
+Since we will later want to use this definition for the calculation of cohomology groups the next few properties of Ext will come in handy.
+
+#proposition(title: [@homalg[Chapter IV. Proposition 5.2, 5.3, 5.4]])[
+  #set enum(numbering: "a)")
+  + $Ext_R ^0 (-,B) tilde.equiv Hom_R (-,B)$.
+  + $Ext_R ^n (A,B)=0$ for $n=1, 2, dots$ and $A$ projective.
+  + $Ext_R ^n (A plus.circle A',B)= Ext_R ^n (A,B) plus.circle Ext_R ^n (A',B)$ 
+  + $Ext_ZZ ^1(ZZ_n,G)=G slash n G$ for a group $G$
+]<ext_properties>
+
+#proof()[
+  #set enum(numbering: "a)")
+  + Let $A in LMod(R)$ and $P$ be a projective resolution of $A$. Then 
+    $
+      P_1 -> P_0 -> A -> 0
+    $
+    is exact and since $Hom_R (-,B)$ left exact and contravariant 
+    $
+      0 -> Hom_R (A,B) xarrow(phi) Hom_R (P_0,B) xarrow(psi) Hom_R (P_1,B)
+    $
+    exact. Therefore we get 
+    $
+      Ext_R ^0 (A,B):= H^0(Hom_R (P,B))= (ker psi)/(im 0)=im phi= (im phi)/(ker phi) tilde.equiv Hom_R (A,B).
+    $
+    This is implied by the first isomorphism theorem.
+  + $
+      P: dots.c -> 0 -> A -> A -> 0 
+    $
+    is a projective resolution for $A$. For $Hom_R (P,B)$ we have 
+    $
+      0 -> Hom_R (A,B) -> 0 -> 0 -> dots.c
+    $
+    and therefore 
+    $
+      Ext_R ^n (A,B)= H^n (Hom_R (P,B))= 0/0=0
+    $
+    for $n=1, 2, dots.c$.
+  + Let $P,P'$ be projective resolutions of $A,A' in LMod(R)$, then $P plus.circle  P'$ is a projective resolution for $A plus.circle A'$. Since $Hom_R (-,B)$ is      additive the result follows.
+  + A free resolution and therefore also a projective one for $ZZ_n$ is
+    $
+      P: 0 -> ZZ xarrow(n) ZZ -> ZZ_n -> 0.
+    $
+    Dualizing with $Hom(-,G)$ yields
+    $
+      Hom(P,G): 0->Hom(ZZ,G)tilde.equiv G xarrow(n^*=n) Hom(ZZ,G)tilde.equiv G->0
+    $
+    and $Ext_ZZ ^1(ZZ_n,G)=H^1(Hom(P,G))=Hom(ZZ,G) slash ker n^*= G slash n G$.
+]
+
+== Singular Cohomology for Spaces
+
+Let $X$ be a topological space. From homology theory we know that
+$
+  C: dots.c -> C_(n+1) (X) xarrow(diff_(n+1)) C_n (X) xarrow(diff_n) C_(n-1) (X) -> dots.c
+$
+is a chain complex where $C_n (X)$ denotes the singular chain group and $diff_n$ boundary maps.
+
+We can apply $Hom (-,G)$ for $G in Ab$ and get a cochain complex
+$
+  C^*: dots.c -> C^(n-1) (X;G) xarrow(delta_n) C^n (X;G) xarrow(delta_(n+1)) C^(n+1) (X;G) -> dots.c
+$
+where $C^n (X;G):=Hom (C_n (X),G)$ are the singular cochain groups and $delta_n:= diff_n ^*$ are the coboundary maps defined by $delta(alpha)= diff^*(alpha)= alpha compose diff$ for some map $alpha$.
+
+This is in fact a cochain complex since
+$
+  delta_n delta_(n-1) (alpha)=diff_n ^* diff_(n-1) ^* (alpha)=diff_n ^* (alpha compose diff_(n-1))=alpha compose diff_(n-1) compose diff_n = alpha compose 0 = 0.
+$
+follows from the fact that $C$ is a chain complex.
+
+#definition(title: [(Singular Cohomology for a Space) @at[p. 197]])[
+  For the above construction we define the (singular) cohomology group of a topological space $X$ as 
+  $
+    H^n (X;G):= H^n (C^*)=(ker delta_n)/(im delta_(n-1)). 
+  $
+]
+
+We will sometimes also write $H^n (C;G)$ for some chain complex $C$ and mean $H^n (Hom (C,G))$ by that.
+
+For a pair $(X,A)$ of spaces we have
+$
+  0-> C_n (A) xarrow(i) C_n (X) xarrow(j) C_n (X,A) -> 0
+$
+exact. Here $i$ denotes the inclusion, $j$ the quotient map since $C_n (X,A):= C_n (X) slash C_n (A)$. Since $Hom (-,G)$ is left exact we get an exact sequence
+$
+  0-> C^n (X,A;G) xarrow(j^*) C^n (X;G) xarrow(i^*) C^n (A;G) -> 0
+$
+where $C^n (X,A;G):=Hom (C_n (X,A), G)$ by showing that $im j^* = ker i^*$ and $im i^*=C^n (A;G)$.
+
+One gets relative cochain maps $delta_n ^A:C^n (X,A;G)-> C^(n+1) (X,A;G)$ by restricting the absolute cochain maps $delta_n: C^n (X;G)-> C^(n+1) (X;G)$ to 
+$
+  ker i^*:= {psi: C_n (X) -> G | psi(sigma)=0 "for all" sigma in C_n (A)}
+$
+which corresponds to $C^n (X,A;G)$. We can therefore define the following.
+
+#definition(title: [(Relative Cohomology) @at[p. 199]])[
+  For the above $delta_i ^A$ we define
+  $
+    H^n (X,A;G):= (ker delta_n ^A)/(im delta_(n-1) ^A)
+  $
+  to be the n-th relative cohomology group of the pair $(X,A)$.
+]
+
+Choosing $A$ as a point we get reduced cohomology.
+
+#definition(title: [(Reduced Cohomology) @at[p. 200]])[
+  $tilde(H)^n (X):=H^n (X,*;G)$
+]
+
+#proposition(title: [(Homotopy Invariance of Induced Homomorphisms on Cohomology) @at[p. 201]])[
+  For $f tilde.eq g:(X,A)->(Y,B)$ we have $f^* = g^*: H^n (X,A;M)-> H^n (Y,B;M)$.
+]
+
+== Cup product
+
+#definition(title: [(Cup Product for Cochains) @at[p. 206]])[
+  Let $X$ be a topological space and $R$ be a ring.
+  $
+    cup: C^k (X;R) times C^ell (X;R) -> C^(k+ell)(X;R), phi cup psi (sigma):= phi(sigma|_([v_0,dots, v_k]))psi(sigma|_([v_k, dots, v_(k+ell)]))
+  $
+  for $sigma: Delta^(k+ell)-> X$ is called the cup product. This product is associative as well as distributive.
+]
+
+The following theorem is a tool to proof that the cup product descents to cohomology.
+
+#lemma(title: [@at[Lemma 3.6]])[
+  $
+    delta_(k+ell+1) (phi cup psi)= delta_(k+1) phi cup psi + (-1)^k phi cup delta_(ell+1) psi.
+  $
+]
+
+The cup product induces a product on the cohomology groups
+$
+  cup: H^k (X;R) times H^ell (X;R) -> H^(k+ell) (X;R)
+$
+since the product of two cocycles is again a cocycle and the product of a cocycle and a coboundary in either order is a coboundary. Since it was associative and distributive on the level of cochains we also get this for the cohomology groups. The neutral element is $[1]in H^0(X;R), 1: C_0 (X)-> R, 1(sigma):=1$.
+
+#proposition(title: [@at[Proposition 3.10]])[
+  For $R$ commutative we have
+  $
+    alpha cup beta = (-1)^(k dot l)beta cup alpha.
+  $
+]
+
+#definition(title: [(Graded Cohomology Ring) @at[p. 212]])[
+  For $[a],[b] in H^n (X;R)$ we have $a,b: C_n -> R$.
+  Define $[a] + [b] := [a + b] in H^n (X;R)$.
+  $
+    H^*(X;R) := plus.big_(n>=0) H^n (X;R)
+  $
+  defines a _graded ring_ with the above addition and
+  $(sum alpha_i) cup (sum beta_j) := sum_{i,j} alpha_i cup beta_j$
+  as multiplication.
+]
+
+#definition(title: [(Relative Cross Product) @at[p.~215]])[
+  Let $p_1: X times Y ->> X$ and $p_2: X times Y ->> Y$ be the canonical projections.
+  $
+    times:
+    H^*(X,A;R) times.circle_R H^*(Y,G;R)
+    &-> H^*(X times Y, A times Y union X times B;R) \
+    x times.circle y &|-> p_1^*(x) cup p_2^*(y)
+  $
+  defines the _relative cross product_.
+] <relative_cross_product>
+
+#definition(title: [(Smash Product) @cat[Definition 1.28]])[
+  Let $or$ denote the wedge sum.
+  By slight abuse of notation
+  $
+    X and Y
+    := (X times Y)/(X times {y_0} union {x_0} times Y)
+    = (X times Y)/(X or Y).
+  $
+] <smash_product>
 
 #grid(
   columns: (auto,auto),
@@ -75,80 +342,53 @@
   )
 )
 
-Reduced suspension yields a canonical base point $[(x_0, t)]$.
-For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ inducing $Sigma f: Sigma X -> Sigma Y$.
-
-#definition(title: [(Suspension Homomorphism) @cat[Definition 1.26]])[
-  Let $(X,x_0)$ be a space.
-  The _suspension homomorphism_ is a natural transformation $Sigma: pi_n => pi_(n+1) compose Sigma$ defined by
-  $
-    Sigma: pi_k (X,x_0) &-> pi_(k+1)(Sigma X, [x_0 times I]) \
-    [f]                &|-> [Sigma f].
-  $
-]
-
-#definition(title: [(Smash Product) @cat[Definition 1.28]])[
-  Let $or$ denote the wedge sum.
-  By slight abuse of notation
-  $
-    X and Y
-    := (X times Y)/(X times {y_0} union {x_0} times Y)
-    = (X times Y)/(X or Y).
-  $
-] <smash_product>
-
 #example[
   $X and S^k = Sigma^k X$.
 ] <smash_product_reduced_suspension>
 
-= Cohomology and the Ext Functor
+#example(title: "(Reduced Cross Product)")[
+  For $(X,{x_0})$ and $(Y,{y_0})$ we get a reduced cross product
+  $
+    tilde(H)^*(X;R) times.circle_R tilde(H)^*(Y;R) xarrow(times) tilde(H)^*(X and Y;R),
+  $
+  where $X and Y$ is the smash product from @smash_product.
+] <reduced_cross_product>
 
-#definition(title: [(Cohomology Groups) @at[p. 191]])[
-  Let $C$ be a chain complex and denote the $n$-th _cochain group_ by $C_n^* := Hom_R (C_n,M)$.
-  For a boundary map $partial: C_n -> C_(n+1)$,
-  define the _coboundary map_ $delta(phi) := partial^*(phi) = phi compose partial$.
-  $
-    dots.c <-
-    C_(n+1)^* xarrow(sym: <-, delta)
-    C_n^* xarrow(sym: <-, delta)
-    C_(n-1)^* <-
-    dots.c
-  $
-  Define the $n$-th _cohomology group_ $H^n (C;G) := ker delta_(n+1) slash im delta_n$.
+#theorem(title: [(Künneth formula) @at[Theorem 3.18]])[
+  For CW pairs $(X,A)$ and $(Y,G)$ the relative cross product in @relative_cross_product is an isomorphism of rings
+  if for all $k$, $H^k (Y,G;R)$ is a finitely generated free $R$-module.
 ]
 
-#definition(title: [($Ext$ functor) @at[p. 195]])[
-  Choose a free resolution $F$ of $M$, an exact sequence
+#corollary(title: "(Suspension Isomorphism)")[
+  Let $r$ be a generator of $H^k (S^k;R) tilde.equiv R$, see @sphere_cohomology.
+  With @smash_product_reduced_suspension and @reduced_cross_product in mind we get the _suspension isomorphism_
   $
-    dots.c -> F_2 xarrow(f_2) F_1 xarrow(f_1) F_0 xarrow(f_0) M -> 0,
+    tilde(H)^n (X;R) xarrow(tilde.equiv) tilde(H)^(n+k) (Sigma^k X;R), quad
+    x |-> x times.circle r.
   $
-  with each $F_i$ a free $R$-module.
-  Apply $Hom_R (-,N)$ and drop $Hom_R (M,N)$ to optain a chain complex
-  $
-    dots.c <-
-    Hom_R (F_2,N) xarrow(sym: <-, f_2^*)
-    Hom_R (F_1,N) xarrow(sym: <-, f_1^*)
-    Hom_R (F_0,N) <-
-    0.
-  $
-  The homology groups define $Ext_R^n (M,N)$.
-  By @at[Lemma 3.1. (b)] these do not depend on the choice of $F$.
+] <suspension_isomorphism>
 
-  Write $Ext_R (M,N) := Ext_R^1 (M,N)$.
-]
+== The Universal Coefficient Theorem
+
+We restrict ourselves to $ZZ$-modules i.e. abelian groups for the next statements. 
+
+For $[phi] in H^n (C;G)$ we have $phi: C_n -> G$ as well as $phi in ker delta_(n+1)$. This yields that
+$
+  0=delta_(n+1) (phi)=phi compose diff_(n+1) <=> phi(im diff_(n+1))=0. 
+$
+We therefore get that $phi|_(ker diff_n)$ induces $tilde(phi_0): (ker diff_n)/(im diff_(n+1))=H_n(C)->G$. Now define a map
+$
+  h: H^n (C;G)-> Hom(H_n (C), G), h([phi]):=tilde(phi_0).
+$
+
+We get the following result known as the universal coefficient theorem.
 
 #theorem(title: [(Universal Coefficient Theorem) @at[Theorem 3.2]])[
   $
-    0 -> Ext(H_(n-1)(C),G) -> H^n (C;G) -> Hom(H_n (C),G) -> 0
+    0 -> Ext_ZZ ^1(H_(n-1)(C),G) -> H^n (C;G) -> Hom(H_n (C),G) -> 0
   $
   is split exact.
 ] <uct>
-
-#theorem([Properties of Ext @at[p. 195]])[
-  - $Ext(H plus.circle H',G) tilde.equiv Ext(H,G) plus.circle Ext(H',G)$
-  - $Ext(H,G) = 0$ if $H$ is free.
-  - $Ext(ZZ_n,G) tilde.equiv G slash n G$.
-] <ext_properties>
 
 #example(title: "(Cohomology of Spheres)")[
   Remember that
@@ -171,58 +411,6 @@ For $f: X -> Y$ the product map $f times id$ factors through $S$ and $Sigma$ ind
     )
   $
 ] <sphere_cohomology>
-
-#definition(title: [(Cup Product) @at[p. 206]])[
-  The _cup product_ $phi cup psi in C^(k+ell)(X;R)$ of $phi in C^k(X;R)$ and $phi in C^(ell)(X;R)$ is defined for a singular simplex $sigma colon Delta^(k+ell) arrow.r X$ as
-  $
-    (phi cup psi)(sigma)
-    = phi(sigma|[v_0,...,v_k]) dot psi(sigma|[v_k,...,v_(k+ell)]).
-  $
-]
-
-#definition(title: [(Graded Cohomology Ring) @at[p. 212]])[
-  For $[a],[b] in H^n (X;R)$ we have $a,b: C_n -> R$.
-  Define $[a] + [b] := [a + b] in H^n (X;R)$.
-  $
-    H^*(X;R) := plus.big_(n>=0) H^n (X;R)
-  $
-  defines a _graded ring_ with the above addition and
-  $(sum alpha_i) cup (sum beta_j) := sum_{i,j} alpha_i cup beta_j$
-  as multiplication.
-]
-
-#definition(title: [(Relative Cross Product) @at[p.~215]])[
-  Let $p_1: X times Y ->> X$ and $p_2: X times Y ->> Y$ be the canonical projections.
-  $
-    times:
-    H^*(X,A;R) times.circle_R H^*(Y,B;R)
-    &-> H^*(X times Y, A times Y union X times B;R) \
-    x times.circle y &|-> p_1^*(x) cup p_2^*(y)
-  $
-  defines the _relative cross product_.
-] <relative_cross_product>
-
-#example(title: "(Reduced Cross Product)")[
-  For $(X,{x_0})$ and $(Y,{y_0})$ we get a reduced cross product
-  $
-    tilde(H)^*(X;R) times.circle_R tilde(H)^*(Y;R) xarrow(times) tilde(H)^*(X and Y;R),
-  $
-  where $X and Y$ is the smash product from @smash_product.
-] <reduced_cross_product>
-
-#theorem(title: [(Künneth formula) @at[Theorem 3.18]])[
-  For CW pairs $(X,A)$ and $(Y,B)$ the relative cross product in @relative_cross_product is an isomorphism of rings
-  if for all $k$, $H^k (Y,B;R)$ is a finitely generated free $R$-module.
-]
-
-#corollary(title: "(Suspension Isomorphism)")[
-  Let $r$ be a generator of $H^k (S^k;R) tilde.equiv R$, see @sphere_cohomology.
-  With @smash_product_reduced_suspension and @reduced_cross_product in mind we get the _suspension isomorphism_
-  $
-    tilde(H)^n (X;R) xarrow(tilde.equiv) tilde(H)^(n+k) (Sigma^k X;R), quad
-    x |-> x times.circle r.
-  $
-] <suspension_isomorphism>
 
 = Steenrod Operations and the Steenrod Algebra
 
