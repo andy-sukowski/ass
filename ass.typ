@@ -481,7 +481,7 @@ TODO: Are CW approximations weak equivalences? Is it an $Omega$-spectrum?
     image("images/mapping_cylinder.svg", width: 20em),
     caption: [Mapping cylinder $M_f := ((X times I) union.sq Y)/((x,1) ~ f(x))$.],
   )
-]
+] <mapping_cylinder>
 
 Very similar to @cat[Proposition 2.41]:
 
@@ -540,7 +540,7 @@ $
   product_k [X,K(G,k)] tilde.equiv
   [X, or.big_k K(G,k)]
 $
-We can represent $[X,K_0]$ by an inclusion $X arrow.r.hook K_0$ via a mapping cylinder (TODO)
+We can represent $[X,K_0]$ by an inclusion $X arrow.r.hook K_0$ via a mapping cylinder @mapping_cylinder
 and form the quotient $X_1 := K_0 slash X$, which is again a connective spectrum of finite type.
 
 The associated diagram of cohomology @ss[p. 594]
@@ -600,7 +600,6 @@ Applied to the cofibrations $X_s -> K_s -> X_(s+1)$, these give long exact seque
   $
 ]
 
-In general, the differentials are maps $d_r: E_r^(s,t) -> E_r^(s-1,t+r)$ (TODO induced?).
 $d_1: pi_t^Y (K_2) -> pi_t^Y (K_(s+1))$ is induced by $K_s -> K_(s+1)$ in the resolution of $X$ (@resolution_X),
 so the $E_1$ page of the spectral sequence consists of complexes
 $
