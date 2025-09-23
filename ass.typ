@@ -55,6 +55,8 @@
   #v(2em)
 ])
 
+#outline()
+
 = Suspension and Smash Product
 
 #grid(
