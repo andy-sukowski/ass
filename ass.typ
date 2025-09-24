@@ -257,7 +257,7 @@ Choosing $A$ as a point we get reduced cohomology.
 ]
 
 #proposition(title: [(Homotopy Invariance of Induced Homomorphisms on Cohomology) @at[p. 201]])[
-  For $f tilde.eq g:(X,A)->(Y,B)$ we have $f^* = g^*: H^n (X,A;M)-> H^n (Y,B;M)$.
+  For $f tilde.eq g: (X,A)->(Y,B)$ we have $f^* = g^*: H^n (X,A;M)-> H^n (Y,B;M)$.
 ]
 
 == The Universal Coefficient Theorem
@@ -431,7 +431,7 @@ This is a ring homomorphism if we define $(a times.circle b)(c times.circle d):=
   With @smash_product_reduced_suspension and @reduced_cross_product in mind we get the _suspension isomorphism_
   $
     tilde(H)^n (X;R) xarrow(tilde.equiv) tilde(H)^(n+k) (Sigma^k X;R), quad
-    x |-> x times.circle r.
+    x |-> times(x times.circle r).
   $
 ] <suspension_isomorphism>
 
@@ -711,16 +711,6 @@ TODO: Are CW approximations weak equivalences? Is it an $Omega$-spectrum?
   TODO: cohomology
 ] <homology_sphere_spectrum>
 
-#definition(title: [(Mapping Cylinder of Cellular Map)])[
-  Let $f: X -> Y$ be a cellular map of CW spectra.
-  Pass to a strict map (TODO).
-
-  #figure(
-    image("images/mapping_cylinder.svg", width: 20em),
-    caption: [Mapping cylinder $M_f := ((X times I) union.sq Y)/((x,1) ~ f(x))$.],
-  )
-] <mapping_cylinder>
-
 Very similar to @cat[Proposition 2.41]:
 
 #theorem(title: [(Long exact sequence) @ss[p. 591]])[
@@ -778,7 +768,7 @@ $
   product_k [X,K(G,k)] tilde.equiv
   [X, or.big_k K(G,k)]
 $
-We can represent $[X,K_0]$ by an inclusion $X arrow.r.hook K_0$ via a mapping cylinder @mapping_cylinder
+We can represent $[X,K_0]$ by an inclusion $X arrow.r.hook K_0$ via a mapping cylinder @ss[Proof of Proposition 5.42]
 and form the quotient $X_1 := K_0 slash X$, which is again a connective spectrum of finite type.
 
 The associated diagram of cohomology @ss[p. 594]
@@ -859,9 +849,7 @@ $
   #set enum(numbering: "(a)")
   + For fixed $s,t$ the groups $E_r^(s,t)$ stabilize for large $r$.
     For the filtration of $pi_(t-s)^Y (X)$ by images $F^(s,t)$ of the maps $pi_t^Y (X_s) -> pi_(t-s)^Y (X)$, we have
-    $
-      E_oo^(s,t) tilde.equiv F^(s,t) slash F^(s+1,t+1).
-    $
+    $E_oo^(s,t) tilde.equiv F^(s,t) slash F^(s+1,t+1)$.
 
   + $inter.big_n F^(s+n,t+n)$ is the subgroup of $pi_(t-s)^Y (X)$ consisting of torsion elements of order prime to $p$.
 ]
