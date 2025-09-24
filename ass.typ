@@ -125,7 +125,7 @@ We are now ready to define the right drived functors and show that they are in f
   for a projective resolution $P "of" A$. For $alpha in Hom_R (A,A'), A,A' in LMod(R)$ and $P,P'$ projective resolutions of $A,A'$ there exists a chain map $tilde(alpha): P-> P'$ by @thm4.1 that induces $alpha$. Applying $R^n S$ yields a map $R^n S(alpha): R^n S(A)-> R^n S(A')$ independent of $tilde(alpha)$ by @corollary3.5.
 ]<rdevfunc>
 
-#corollary(title: [@homalg[p.131 (adapted)]])[
+#theorem(title: [@homalg[p.131 (adapted)]])[
   $R^n S$ as in @rdevfunc is a functor.
 ] 
 
@@ -226,6 +226,7 @@ follows from the fact that $C$ is a chain complex.
 ]
 
 We will sometimes also write $H^n (C;G)$ for some chain complex $C$ and mean $H^n (Hom (C,G))$ by that.
+
 For a pair $(X,A)$ of spaces we have
 $
   0-> C_n (A) xarrow(i) C_n (X) xarrow(j) C_n (X,A) -> 0
@@ -258,6 +259,56 @@ Choosing $A$ as a point we get reduced cohomology.
 #proposition(title: [(Homotopy Invariance of Induced Homomorphisms on Cohomology) @at[p. 201]])[
   For $f tilde.eq g:(X,A)->(Y,B)$ we have $f^* = g^*: H^n (X,A;M)-> H^n (Y,B;M)$.
 ]
+
+== The Universal Coefficient Theorem
+
+We restrict ourselves to $ZZ$-modules i.e. abelian groups for the next statements. 
+
+For $[phi] in H^n (C;G)$ we have $phi: C_n -> G$ as well as $phi in ker delta_(n+1)$. This yields that
+$
+  0=delta_(n+1) (phi)=phi compose diff_(n+1) <=> phi(im diff_(n+1))=0. 
+$
+We therefore get that $phi|_(ker diff_n)$ induces $tilde(phi_0): (ker diff_n)/(im diff_(n+1))=H_n(C)->G$. Now define a map
+$
+  h: H^n (C;G)-> Hom(H_n (C), G), h([phi]):=tilde(phi_0).
+$
+
+We get the following result known as the universal coefficient theorem.
+
+#theorem(title: [(Universal Coefficient Theorem) @at[Theorem 3.2]])[
+  $
+    0 -> Ext_ZZ ^1(H_(n-1)(C),G) -> H^n (C;G) -> Hom(H_n (C),G) -> 0
+  $
+  is split exact.
+] <uct>
+
+There are more general results replacing abelian groups with $R$-modules for some ring $R$ and $Hom$ with $Hom_R$. One gets a split exact sequence
+$
+  0 -> Ext_R ^1(H_(n-1)(C),A) -> H^n (C;A) -> Hom_R(H_n (C),A) -> 0
+$
+where $A in LMod(R)$.
+
+#example(title: "(Cohomology of Spheres)")[
+  Remember that
+  $
+    H_n S^m =
+    cases(
+      ZZ\, &" if" n in {0,m},
+      0\,  &" otherwise".
+    )
+  $
+  Note that both $ZZ$ and $0$ are free and therefore also projective.
+  Thus by @uct and @ext_properties:
+  $
+    H^n (S^m;G)
+    tilde.equiv Ext(H_(n-1)(S^m),G) plus.circle Hom(H_n (S^m),G)
+    tilde.equiv 0 plus.circle
+    cases(
+      G\, &" if" n in {0,m},
+      0\, &" otherwise"
+    )
+  $
+] <sphere_cohomology>
 
 == Cup product
 
@@ -301,7 +352,27 @@ since the product of two cocycles is again a cocycle and the product of a cocycl
   as multiplication.
 ]
 
-#definition(title: [(Relative Cross Product) @at[p.~215]])[
+The cup product can also be defined for relative cohomology via
+$
+  H^k (X,A;R) times H^ell (X,B;R)xarrow(cup) H^(k+ell) (X,A union B;R)
+$
+if $A,B$ are open subsets of $X$ or subcomplexes of the CW complex $X$.
+
+== The Cross Product and Suspension Isomorphism
+
+We can define a cross product for the cohomology ring.
+
+#definition(title: [(Cross Product) @at[p. 215]])[
+  Let $p_1: X times Y -> X, p_2: X times Y -> Y$ be projections. We define
+  $
+    H^* (X;R) times.circle_R H^* (Y;R) xarrow(times) H^* (X times Y;R), a times.circle b |-> p_1 ^* (a) cup p_2 ^* (b)
+  $
+  
+]
+
+This is a ring homomorphism if we define $(a times.circle b)(c times.circle d):= (-1)^(|b||c|) a c times.circle b d$.
+
+#definition(title: [(Relative Cross Product) @at[p.215]])[
   Let $p_1: X times Y ->> X$ and $p_2: X times Y ->> Y$ be the canonical projections.
   $
     times:
@@ -363,50 +434,6 @@ since the product of two cocycles is again a cocycle and the product of a cocycl
     x |-> x times.circle r.
   $
 ] <suspension_isomorphism>
-
-== The Universal Coefficient Theorem
-
-We restrict ourselves to $ZZ$-modules i.e. abelian groups for the next statements. 
-
-For $[phi] in H^n (C;G)$ we have $phi: C_n -> G$ as well as $phi in ker delta_(n+1)$. This yields that
-$
-  0=delta_(n+1) (phi)=phi compose diff_(n+1) <=> phi(im diff_(n+1))=0. 
-$
-We therefore get that $phi|_(ker diff_n)$ induces $tilde(phi_0): (ker diff_n)/(im diff_(n+1))=H_n(C)->G$. Now define a map
-$
-  h: H^n (C;G)-> Hom(H_n (C), G), h([phi]):=tilde(phi_0).
-$
-
-We get the following result known as the universal coefficient theorem.
-
-#theorem(title: [(Universal Coefficient Theorem) @at[Theorem 3.2]])[
-  $
-    0 -> Ext_ZZ ^1(H_(n-1)(C),G) -> H^n (C;G) -> Hom(H_n (C),G) -> 0
-  $
-  is split exact.
-] <uct>
-
-#example(title: "(Cohomology of Spheres)")[
-  Remember that
-  $
-    H_m S^n =
-    cases(
-      ZZ\, &" if" m in {0,n},
-      0\,  &" otherwise".
-    )
-  $
-  Note that both $ZZ$ and $0$ are free.
-  Thus by @uct and @ext_properties:
-  $
-    H^n (S^m;G)
-    tilde.equiv Ext(H_(n-1)(S^m),G) plus.circle Hom(H_n (S^m),G)
-    tilde.equiv 0 plus.circle
-    cases(
-      G\, &" if" n in {0,m},
-      0\, &" otherwise"
-    )
-  $
-] <sphere_cohomology>
 
 = Steenrod Operations and the Steenrod Algebra
 
