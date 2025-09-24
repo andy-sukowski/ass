@@ -28,3 +28,11 @@ homalg:
     - Peter John Hilton
     - Urs Stammbach
   date: 1997
+
+op:
+  type: book
+  title: Cohomology Operations and Applications in Homotopy Theory
+  author:
+    - Robert E. Mosher
+    - Martin C. Tangora
+  date: 1968

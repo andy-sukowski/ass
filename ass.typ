@@ -493,6 +493,16 @@ We get the following result known as the universal coefficient theorem.
   $
 ]
 
+#definition(title: [(Admissible Sequence) @op[Definition 3.3]])[
+  Let $r$ be the _length_ of a sequence $I := {i_1, ..., i_r}$.
+  $I$ is _admissible_ if $i_j >= 2 i_(j+1)$ for all $j < r$.
+  Let $Sq^I := Sq^(i_1) dots.c Sq^(i_r)$ and $Sq^{} := Sq^0 = id$.
+]
+
+#theorem(title: [(Serre-Cartan Basis) @op[Theorem 6.2.1]])[
+  The monomials $Sq^I$, as $I$ runs through all admissible sequences, form a basis for $cal(A)$ as a $ZZ_2$-module.
+]
+
 = The Adams Spectral Sequence and Low-Dimensional Computations
 
 #figure(
@@ -622,7 +632,7 @@ One way in which spectra are better than spaces is that $[X,Y]$ is always an abe
 
 #example(title: [(Sphere spectrum) @cat[Definition 2.8]])[
   A special case of @suspension_prespectrum_functor is $SS := Sigma^oo S^0$.
-]
+] <sphere_spectrum>
 
 #example(title: [(Eilenberg-MacLane spectrum) @cat[Example 2.26] @ss[p. 585]])[
   Let $G$ be abelian.
@@ -655,7 +665,24 @@ TODO: Are CW approximations weak equivalences? Is it an $Omega$-spectrum?
   is the _chain complex of the CW spectrum $X$_ with a $G$ summand for each cell of $X$.
   Since homology commutes with direct limits,
   $H_i (X;G) = dirlim_n H_(i+n)(X_n;G)$.
+
+  TODO: cohomology
 ]
+
+#example(title: [(Homology of Sphere Spectrum)])[
+  Recall the sphere spectrum $SS$ from @sphere_spectrum.
+  $
+    H_i (SS;G)
+    = dirlim_n H_(i+n)(S^n;G)
+    = cases(
+      G\, &" if" i = 0,
+      0\, &" otherwise".
+    )
+  $
+  So $H_*(SS;G)$ contains only a copy of $G$ in degree zero.
+
+  TODO: cohomology
+] <homology_sphere_spectrum>
 
 #definition(title: [(Mapping Cylinder of Cellular Map)])[
   Let $f: X -> Y$ be a cellular map of CW spectra.
@@ -814,6 +841,30 @@ $
 
 == Computing a Few Stable Homotopy Groups of Spheres
 
-TODO
+Let $X = Y = SS$ and $p = 2$.
+
+#definition(title: [(Minimal Free Resolution) @ss[p. 600]])[
+  A _minimal free resolution_ of $H^*(X)$ is a free resolution of graded modules
+  $
+    dots.c -> F_2 -> F_1 -> F_0 -> H^*(X) -> 0,
+  $
+  with a minimum number of free generators for $F_i$ in each degree.
+]
+
+These allow us to compute $Ext_cal(A)^(s,t)(H^*(X),ZZ_p)$:
+
+#lemma(title: [(Dual Complex of Minimal Free Resolution) @ss[Lemma 5.49]])[
+  For a minimal free resolution, the dual boundary maps are zero in
+  $
+    dots.c <- Hom_cal(A)(F_2,ZZ_p) <- Hom_cal(A)(F_1,ZZ_p) <- Hom_cal(A)(F_0,ZZ_p) <- 0,
+  $
+  hence $Ext_cal(A)^(s,t)(H^*(X),ZZ_p) = Hom_cal(A)^t (F_s,ZZ_p)$.
+]
+
+By @homology_sphere_spectrum $H^*(SS;ZZ_2) = ZZ_2$.
+
+TODO:
+Compute $Ext_cal(A)^(s,t)(H^*(SS),ZZ_2) = Hom_cal(A)^t (F_s,ZZ_p)$
+by constructing a minimal resolution of $ZZ_2$ as an $cal(A)$-module.
 
 #bibliography("ass.yml", full: true)
