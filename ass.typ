@@ -541,22 +541,22 @@ This is a ring homomorphism if we define $(a times.circle b)(c times.circle d):=
 
 #definition(title: [(Filtration) @ss[p. 522]])[
   A sequence of subspaces
-  $dots.c subset.eq X_p subset.eq X_(p+1) subset.eq dots.c$
-  is a _filtration_ of $X := product.co X_p$.
+  $dots.c subset.eq X_s subset.eq X_(s+1) subset.eq dots.c$
+  is a _filtration_ of $X := product.co X_s$.
 ]
 
-By @at[Theorem 2.16] each pair $(X_p,X_(p-1))$ yields a _long exact sequence of homology_ with connecting homomorphisms $k$.
+By @at[Theorem 2.16] each pair $(X_s,X_(s-1))$ yields a _long exact sequence of homology_ with connecting homomorphisms $k$.
 #math.equation(block: true, numbering: "(1)",
-  $dots.c xarrow(k) H_n (X_(p-1)) xarrow(i) H_n (X_p) xarrow(j) H_n (X_p, X_(p-1)) xarrow(k) H_(n-1) (X_(p-1)) xarrow(i) dots.c$
+  $dots.c xarrow(k) H_n (X_(s-1)) xarrow(i) H_n (X_s) xarrow(j) H_n (X_s, X_(s-1)) xarrow(k) H_(n-1) (X_(s-1)) xarrow(i) dots.c$
 ) <long_exact_homology>
-Considering all pairs $(X_p,X_(p-1))$ at once, we can interlock these long exact sequences in a _staircase diagram_:
+Considering all pairs $(X_s,X_(s-1))$ at once, we can interlock these long exact sequences in a _staircase diagram_:
 #figure(
   diagram(
     spacing: (0.8em, 1em),
     $
-      col(#red,H_(n+1)(X_p)) & col(#red,H_(n+1)(X_p,X_(p-1))) & col(#red,H_n (X_(p-1))) & H_n (X_(p-1),X_(p-2))       & H_(n-1)(X_(p-2)) \
-      H_(n+1)(X_(p+1))       & H_(n+1)(X_(p+1),X_p))          & col(#red,H_n (X_p))     & col(#red,H_n (X_p,X_(p-1))) & col(#red,H_(n-1)(X_(p-1))) \
-      H_(n+1)(X_(p+2))       & H_(n+1)(X_(p+2),X_(p+1))       & H_n (X_(p+1))           & H_n (X_(p+1),X_p)           & col(#red,H_(n-1)(X_p))
+      col(#red,H_(n+1)(X_s)) & col(#red,H_(n+1)(X_s,X_(s-1))) & col(#red,H_n (X_(s-1))) & H_n (X_(s-1),X_(s-2))       & H_(n-1)(X_(s-2)) \
+      H_(n+1)(X_(s+1))       & H_(n+1)(X_(s+1),X_s))          & col(#red,H_n (X_s))     & col(#red,H_n (X_s,X_(s-1))) & col(#red,H_(n-1)(X_(s-1))) \
+      H_(n+1)(X_(s+2))       & H_(n+1)(X_(s+2),X_(s+1))       & H_n (X_(s+1))           & H_n (X_(s+1),X_s)           & col(#red,H_(n-1)(X_s))
     $,
     edge((-1,0), "r", "->"),
     edge((-1,1), "r", "->"),
@@ -598,11 +598,14 @@ Considering all pairs $(X_p,X_(p-1))$ at once, we can interlock these long exact
   align: horizon,
   definition(title: [(Exact Couple) @ss[p. 522]])[
     Write the preceding staircase diagram (@staircase) concisely as the right triangle, an _exact couple_, where
-    $A := plus.big_(n,p) H_n (X_p)$
-    and
-    $E := plus.big_(n,p) H_n (X_p,X_(p-1))$
+    $
+      A_(s,t) &:= H_(s+t) (X_s), quad
+      &A &:= plus.big_(s,t) A_(s,t), \
+      E_(s,t) &:= H_(s+t) (X_s, X_(s-1)), quad
+      &E &:= plus.big_(s,t) E_(s,t).
+    $
     and $i$, $j$ and $k$ form the long exact sequences (@long_exact_homology).
-    Define a _differential_ $d: E -> E$ as $d := j k$.
+    Define a _differential_ $d := j k: E_(s,t) -> A_(s-1,t) -> E_(s-1,t)$.
   ],
   diagram(
     spacing: (1em, 2em),
@@ -615,6 +618,13 @@ Considering all pairs $(X_p,X_(p-1))$ at once, we can interlock these long exact
     edge((1,1), "ul", "->", $k$, left),
   ),
 )
+
+/* Degrees of $i$, $j$, $k$:
+ *
+ * $i: A_(s,t) -> A_(s+1,t-1)$,
+ * $j: A_(s,t) -> E_(s,t)$,
+ * $k: E_(s,t) -> A_(s-1,t)$.
+ */
 
 Note that all corners of the triangle are exact and $d^2 = j k j k = 0$, since $k j = 0$.
 Thus we can take homology $ker d slash im d$:
@@ -635,6 +645,15 @@ Thus we can take homology $ker d slash im d$:
   )
 ]
 
+/* Degrees of $i'$, $j'$, $k'$:
+ *
+ * $A' subset.eq A_(s+1,t-1)$,
+ * $i': A'_(s,t) -> A'_(s+1,t-1)$,
+ * $j': A'_(s,t) -> E'_(s-1,t+1)$,
+ * $k': E'_(s,t) -> A'_(s-1,t)$.
+ */
+
+Note that $d': E'_(s,t) -> A'_(s-1,t) -> E'_(s-2,t+1)$.
 Iterating the process of deriving couples leads to the sequence
 $E,E',...$ with differentials $d,d',...$ called a _spectral sequence_.
 
@@ -663,14 +682,9 @@ One way in which spectra are better than spaces is that $[X,Y]$ is always an abe
 
 #example(title: [(Eilenberg-MacLane spectrum) @cat[Example 2.26] @ss[p. 585]])[
   Let $G$ be abelian.
-  Define $X_n := K(G,n)$ and let
-  $
-    sigma_n: Sigma K(G,n) -> K(G,n+1)
-  $
+  Define $X_n := K(G,n)$ and let $sigma_n: Sigma K(G,n) -> K(G,n+1)$
   be the adjoint of a CW approximation $K(G,n) -> Omega K(G,n+1)$, see @cat[Proposition 1.32].
 ]
-
-TODO: Are CW approximations weak equivalences? Is it an $Omega$-spectrum?
 
 #example(title: [(CW spectrum) @cat[Definition 2.27] @ss[p. 585]])[
   Let $X_n$ be based CW complexes and $sigma_n$ cellular inclusions.
@@ -711,7 +725,8 @@ TODO: Are CW approximations weak equivalences? Is it an $Omega$-spectrum?
   TODO: cohomology
 ] <homology_sphere_spectrum>
 
-Very similar to @cat[Proposition 2.41]:
+The following result does not hold for ordinary spaces.
+It's very similar to @cat[Proposition 2.42].
 
 #theorem(title: [(Long exact sequence) @ss[p. 591]])[
   For a pair $(X,A)$ of CW spectra and any $Y$, there is an exact sequence
@@ -808,13 +823,13 @@ Applied to the cofibrations $X_s -> K_s -> X_(s+1)$, these give long exact seque
     edge((1,0),  "r", "->", stroke: red),
     edge((1,1),  "r", "->"),
     edge((2,0),  "r", "->"),
-    edge((2,1),  "r", "->"),
+    edge((2,1),  "r", "->", stroke: red),
     edge((0,-1), "d", "->", stroke: red),
     edge((0,0),  "d", "->"),
     edge((0,1),  "d", "->"),
     edge((2,-1), "d", "->"),
     edge((2,0),  "d", "->", stroke: red),
-    edge((2,1),  "d", "->", stroke: red),
+    edge((2,1),  "d", "->"),
   ),
 )
 
