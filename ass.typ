@@ -495,30 +495,18 @@ This is a ring homomorphism if we define $(a times.circle b)(c times.circle d):=
      $0 -> ZZ_2 -> ZZ_4 -> ZZ_2 -> 0$.
 ] <steenrod_squares_properties>
 
-#theorem(title: [(Adem relations) @at[p. 496]])[
+#theorem(title: [(Adem relation for $Sq$) @at[p. 496]])[
   $
     Sq^a Sq^b
-    &= sum_j binom(b-j-1,a-2j) Sq^(a+b-j) Sq^j,
-    &&" if " a < 2b \
-    P^a P^b
-    &= sum_j (-1)^(a+j) binom((p-1)(b-j)-1, a-p j) P^(a+b-j) P^j,
-    &&" if " a < p b \
-    P^a beta P^b
-    &= sum_j (-1)^(a+j) binom((p-1)(b-j), a-p j) beta P^(a+b-j) P^j \
-    &- sum_j (-1)^(a+j) binom((p-1)(b-j)-1, a-p j-1) P^(a+b-j) beta P^j,
-    &&" if " a <= p b
+    = sum_j binom(b-j-1,a-2j) Sq^(a+b-j) Sq^j,
+    " if " a < 2b
   $
 ]
 
-#definition(title: [(Steenrod Algebra) @at[p. 496]])[
+#definition(title: [(Steenrod Algebra $cal(A)_2$) @at[p. 496]])[
   $
     cal(A)_2 :=
-    (ZZ_2 angle.l Sq^1, Sq^2, dots angle.r)/"(Adem relations)"
-  $
-  For odd $p$ define
-  $
-    cal(A)_p :=
-    (ZZ_p angle.l beta, P^1, P^2, dots angle.r)/("(Adem relations and" beta^2 = 0 ")")
+    (ZZ_2 angle.l Sq^1, Sq^2, dots angle.r)/"(Adem relation)"
   $
 ]
 
@@ -530,25 +518,6 @@ This is a ring homomorphism if we define $(a times.circle b)(c times.circle d):=
 
 #theorem(title: [(Serre-Cartan Basis) @op[Theorem 6.2.1]])[
   The monomials $Sq^I$, as $I$ runs through all admissible sequences, form a basis for $cal(A)$ as a $ZZ_2$-module.
-]
-
-#proposition(title: [@may[Corollary 19.1.1]])[
-  Let $* in A subset X$, where $i: A -> X$ is a cofibration between nondegenerately based spaces.
-  In the long exact sequence
-  $
-    dots.c ->
-    tilde(E)^(q-1)(A) xarrow(delta)
-    tilde(E)^q (X slash A) ->
-    tilde(E)^q (X) ->
-    tilde(E)^q (A) ->
-    dots.c
-  $
-  of the pair $(X,A)$, the connecting homomorphism $delta$ is the composite
-  $
-    tilde(E)^(q-1)(A) xarrow(Sigma)
-    tilde(E)^q (Sigma A) xarrow(partial^*)
-    tilde(E)^q (X slash A).
-  $
 ]
 
 = The Adams Spectral Sequence and Low-Dimensional Computations
