@@ -363,11 +363,13 @@ if $A,B$ are open subsets of $X$ or subcomplexes of the CW complex $X$.
 We can define a cross product for the cohomology ring.
 
 #definition(title: [(Cross Product) @at[p. 215]])[
-  Let $p_1: X times Y -> X, p_2: X times Y -> Y$ be projections. We define
+  Let $p_1: X times Y ->> X$ and $p_2: X times Y ->> Y$ be the canonical projections.
   $
-    H^* (X;R) times.circle_R H^* (Y;R) xarrow(times) H^* (X times Y;R), a times.circle b |-> p_1 ^* (a) cup p_2 ^* (b)
+    times:
+    H^* (X;R) times.circle_R H^* (Y;R) &-> H^* (X times Y;R), \
+    x times.circle y                   &|-> p_1 ^* (x) cup p_2 ^* (y)
   $
-  
+  defines the _cross product_.
 ]
 
 This is a ring homomorphism if we define $(a times.circle b)(c times.circle d):= (-1)^(|b||c|) a c times.circle b d$.
@@ -377,7 +379,7 @@ This is a ring homomorphism if we define $(a times.circle b)(c times.circle d):=
   $
     times:
     H^*(X,A;R) times.circle_R H^*(Y,G;R)
-    &-> H^*(X times Y, A times Y union X times B;R) \
+    &-> H^*(X times Y, A times Y union X times B;R), \
     x times.circle y &|-> p_1^*(x) cup p_2^*(y)
   $
   defines the _relative cross product_.
@@ -712,6 +714,8 @@ Spectra will fix this and more, see @homotopy_classes_abelian and @long_exact.
 
 #example(title: [(CW spectrum) @cat[Definition 2.27] @ss[p. 585]])[
   Let $X_n$ be based CW complexes and $sigma_n$ cellular inclusions.
+  A map $f: X -> Y$ of CW spectra is a _strict_ map $X' -> Y$ for some _cofinal subspectrum_ $X'$ of $X$,
+  see @ss[p. 586-587].
 ]
 
 #definition(title: [(Homology of CW spectrum) @ss[p. 586]])[
