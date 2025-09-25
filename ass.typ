@@ -725,10 +725,29 @@ One way in which spectra are better than spaces is that $[X,Y]$ is always an abe
   TODO: cohomology
 ] <homology_sphere_spectrum>
 
+#definition(title: [(Homotopy for CW Spectra) @ss[p. 587]])[
+  $X times I -> Y$ where $X times I$ is a CW spectrum with
+  $(X times I)_n := (X_n times I)/({x_n} times I)$.
+  Let $[X,Y]$ denote the set of homotopy classes of maps $X -> Y$.
+]
+
+In contrast to ordinary spaces, $[X,Y]$ is always an abelian group @ss[p. 588] for spectra,
+since every CW spectrum $X$ is equivalent to a suspension spectrum $Sigma X'$ @ss[p. 587].
+For $f,g: Sigma X -> Y$ we can define
+$
+  Sigma X' xarrow("pinch")
+  Sigma X' or Sigma X' xarrow(f or g)
+  Y or Y xarrow(nabla)
+  Y,
+$
+where $nabla$ is the fold map, inducing an additive structure on $[X,Y]$.
+Commutativity is achieved by replacing $X$ by a double suspension spectrum $Sigma^2 X''$,
+allowing for the Eckmann-Hilton argument @at[p. 340] @cat[Lemma 1.10].
+
 The following result does not hold for ordinary spaces.
 It's very similar to @cat[Proposition 2.42].
 
-#theorem(title: [(Long exact sequence) @ss[p. 591]])[
+#theorem(title: [(Long Exact Sequence) @ss[p. 591]])[
   For a pair $(X,A)$ of CW spectra and any $Y$, there is an exact sequence
   $
     [Y,A] -> [Y,X] -> [Y,X slash A] ->
