@@ -530,6 +530,25 @@ This is a ring homomorphism if we define $(a times.circle b)(c times.circle d):=
   The monomials $Sq^I$, as $I$ runs through all admissible sequences, form a basis for $cal(A)$ as a $ZZ_2$-module.
 ]
 
+#proposition(title: [@may[Corollary 19.1.1]])[
+  Let $* in A subset X$, where $i: A -> X$ is a cofibration between nondegenerately based spaces.
+  In the long exact sequence
+  $
+    dots.c ->
+    tilde(E)^(q-1)(A) xarrow(delta)
+    tilde(E)^q (X slash A) ->
+    tilde(E)^q (X) ->
+    tilde(E)^q (A) ->
+    dots.c
+  $
+  of the pair $(X,A)$, the connecting homomorphism $delta$ is the composite
+  $
+    tilde(E)^(q-1)(A) xarrow(Sigma)
+    tilde(E)^q (Sigma A) xarrow(partial^*)
+    tilde(E)^q (X slash A).
+  $
+]
+
 = The Adams Spectral Sequence and Low-Dimensional Computations
 
 #figure(

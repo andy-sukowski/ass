@@ -28,6 +28,7 @@ homalg:
     - Peter John Hilton
     - Urs Stammbach
   date: 1997
+  url: https://www.sas.rochester.edu/mth/sites/doug-ravenel/otherpapers/hilton-stammbach.pdf
 
 op:
   type: book
@@ -36,3 +37,11 @@ op:
     - Robert E. Mosher
     - Martin C. Tangora
   date: 1968
+  url: https://webhomes.maths.ed.ac.uk/~v1ranick/papers/moshtang.pdf
+
+may:
+  type: book
+  title: A Concise Course in Algebraic Topology
+  author: J. P. May
+  date: 1999
+  url: https://www.math.uchicago.edu/~may/CONCISE/ConciseRevised.pdf
