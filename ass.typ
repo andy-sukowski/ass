@@ -491,7 +491,7 @@ This is a ring homomorphism if we define $(a times.circle b)(c times.circle d):=
 
   + $Sq^1$ is the $ZZ_2$ Bockstein homomorphism $beta$ associated with the coefficient sequence
      $0 -> ZZ_2 -> ZZ_4 -> ZZ_2 -> 0$.
-]
+] <steenrod_squares_properties>
 
 #theorem(title: [(Adem relations) @at[p. 496]])[
   $
@@ -659,8 +659,13 @@ $E,E',...$ with differentials $d,d',...$ called a _spectral sequence_.
 
 == Spectra
 
-TODO @ss[p. 588]:
-One way in which spectra are better than spaces is that $[X,Y]$ is always an abelian group.
+In the construction of the Adams Spectral Sequence (@free_resolution_cohomology),
+we will need a resolution of $H^*(X)$ by free $cal(A)$-modules.
+$
+  0 <- H^*(X) <- H^*(K_0) <- H^*(K_1) <- H^*(K_2) <- dots.c
+$
+This is impossible for topological spaces $K_s$, since $Sq^i (alpha) = 0$ if $i > |alpha|$ by @steenrod_squares_properties.
+Spectra will fix this and more, see @homotopy_classes_abelian and @long_exact.
 
 #definition(title: [(Spectrum) @ss[p. 584] @cat[Definition 2.6]])[
   A _spectrum_ $X$ is a family ${X_n}_(n>=0)$ of based spaces,
@@ -731,18 +736,25 @@ One way in which spectra are better than spaces is that $[X,Y]$ is always an abe
   Let $[X,Y]$ denote the set of homotopy classes of maps $X -> Y$.
 ]
 
-In contrast to ordinary spaces, $[X,Y]$ is always an abelian group @ss[p. 588] for spectra,
-since every CW spectrum $X$ is equivalent to a suspension spectrum $Sigma X'$ @ss[p. 587].
-For $f,g: Sigma X -> Y$ we can define
-$
-  Sigma X' xarrow("pinch")
-  Sigma X' or Sigma X' xarrow(f or g)
-  Y or Y xarrow(nabla)
-  Y,
-$
-where $nabla$ is the fold map, inducing an additive structure on $[X,Y]$.
-Commutativity is achieved by replacing $X$ by a double suspension spectrum $Sigma^2 X''$,
-allowing for the Eckmann-Hilton argument @at[p. 340] @cat[Lemma 1.10].
+In contrast to ordinary topological spaces:
+
+#proposition(title: [@ss[p. 588]])[
+  For CW spectra $X$ and $Y$, $[X,Y]$ is always an abelian group.
+] <homotopy_classes_abelian>
+
+#proof[
+  Since every CW spectrum $X$ is equivalent to a suspension spectrum $Sigma X'$ @ss[p. 587].
+  For $f,g: Sigma X -> Y$ we can define
+  $
+    Sigma X' xarrow("pinch")
+    Sigma X' or Sigma X' xarrow(f or g)
+    Y or Y xarrow(nabla)
+    Y,
+  $
+  where $nabla$ is the fold map, inducing an additive structure on $[X,Y]$.
+  Commutativity is achieved by replacing $X$ by a double suspension spectrum $Sigma^2 X''$,
+  allowing for the Eckmann-Hilton argument @at[p. 340] @cat[Lemma 1.10].
+]
 
 The following result does not hold for ordinary spaces.
 It's very similar to @cat[Proposition 2.42].
@@ -823,7 +835,7 @@ The associated diagram of cohomology @ss[p. 594]
     $
   ),
   caption: [Free resolution of $H^*(X)$. @ss[p. 594]],
-)
+) <free_resolution_cohomology>
 gives a resolution of $H^*(X)$ by free $cal(A)$-modules (TODO).
 
 Fix a finite spectrum $Y$ and consider the functors $pi_t^Y (Z) := [Sigma^t Y,Z]$.
